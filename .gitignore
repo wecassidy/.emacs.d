@@ -1,0 +1,8 @@
+# Blacklist everything
+*
+# Only track certain files
+!init.el
+!config/
+!config/*/
+!*.el
+!.gitignore

@@ -73,9 +73,7 @@ used to fill a paragraph to `my-LaTeX-auto-fill-function'."
   (local-set-key "\C-cb" 'tex-bold)
   (local-set-key "\C-ci" 'tex-italic)
   (local-set-key "\C-cs" 'tex-smallcaps)
-  (local-set-key "\C-ct" 'tex-typewriter)
-  (local-set-key "\C-cl" "\\left(")
-  (local-set-key "\C-cr" "\\right)"))
+  (local-set-key "\C-ct" 'tex-typewriter))
 
 (add-hook 'LaTeX-mode-hook 'tex-bindings-hook)
 

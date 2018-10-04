@@ -15,7 +15,19 @@
 
 (setq TeX-PDF-mode t)
 
-;; RefTex
+;; Citations: ebib, BibLaTeX, and RefTeX
+(require 'ebib)
+(global-set-key "\C-ce" 'ebib)
+(setq ebib-layout 'custom)
+(setq ebib-bibtex-dialect 'biblatex)
+(setq ebib-autogenerate-keys t)
+(add-hook 'ebib-mode-hook '(add-to-list 'ebib-file-associations
+                                        '("pdf" . "evince")))
+(setq ebib-keywords-file "ebib-keywords.txt")
+(setq ebib-index-columns '(("Author/Editor" 40 t)
+                           ("Year" 6 t)
+                           ("Title" 50 t)))
+
 (require 'reftex)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
@@ -76,13 +88,6 @@ used to fill a paragraph to `my-LaTeX-auto-fill-function'."
   (local-set-key "\C-ct" 'tex-typewriter))
 
 (add-hook 'LaTeX-mode-hook 'tex-bindings-hook)
-
-;; ebib - BibLaTeX database manager for Emacs
-(global-set-key "\C-ce" 'ebib)
-(setq ebib-bibtex-dialect 'biblatex)
-(setq ebib-autogenerate-keys t)
-(add-hook 'ebib-mode-hook '(add-to-list 'ebib-file-associations
-                                        '("pdf" . "evince")))
 
 ;; MLA
 (defun mla-env ()

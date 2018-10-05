@@ -7,6 +7,7 @@
 
 (add-hook 'LaTeX-mode-hook 'visual-line-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook #'latex-extra-mode)
 (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook (lambda ()
@@ -31,9 +32,6 @@
 (require 'reftex)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
-
-(add-hook 'LaTeX-mode-hook #'latex-extra-mode)
-(add-hook 'LaTeX-mode-hook 'cdlatex-mode)
 
 ;; Don't autofill in certain environments (from
 ;; https://tex.stackexchange.com/a/69556/69731)

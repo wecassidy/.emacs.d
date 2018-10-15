@@ -7,7 +7,7 @@
 (require 'python)
 
 ;; Use IPython 3
-(setq python-shell-interpreter "/usr/bin/ipython3"
+(setq python-shell-interpreter "~/.local/bin/ipython3"
       python-shell-interpreter-args "--simple-prompt -i")
 
 ;; Docstring minor mode

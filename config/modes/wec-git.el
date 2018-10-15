@@ -7,6 +7,7 @@
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
 (setq git-commit-major-mode 'org-mode)
+(setq magit-completing-read-function 'magit-ido-completing-read) ; Use ido
 
 (provide 'git.el)
 ;;; git.el ends here

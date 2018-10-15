@@ -15,6 +15,8 @@
 ;; Packages
 (load-file "~/.emacs.d/config/packages.el")
 
+(require 'better-defaults)
+
 ;; UI (theme, fonts, cursor, etc.)
 (require 'interface)
 
@@ -35,7 +37,6 @@
 ;; Turn on modes
 (delete-selection-mode)
 (global-hl-line-mode)
-(tool-bar-mode -1)
 
 ;; Disable startup screen
 (setq inhibit-startup-screen t)

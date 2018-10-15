@@ -48,7 +48,7 @@
                      :underline t)
  (set-face-attribute 'show-paren-mismatch nil
                      :foreground red
-                     :background normal
+                     :background base03
                      :inverse-video t))
 
 ;; Code linting

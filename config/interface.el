@@ -47,7 +47,6 @@
 (flx-ido-mode 1)
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
-(setq ido-use-faces nil)
 
 ;; Use a vertical list instead
 (require 'ido-vertical-mode)
@@ -104,6 +103,15 @@ line."
 ;; to use visual-regexp-steroids's isearch instead of the built-in regexp isearch, also include the following lines:
 (define-key esc-map (kbd "C-r") 'vr/isearch-backward) ;; C-M-r
 (define-key esc-map (kbd "C-s") 'vr/isearch-forward) ;; C-M-s
+
+;; ibuffer: buffer list, but way more awesome
+(require 'ibuffer)
+(setq ibuffer-expert t)
+(setq ibuffer-show-empty-filter-groups nil)
+
+(add-hook 'ibuffer-mode-hook
+	  '(lambda ()
+	     (ibuffer-auto-mode 1))) ; Keep ibuffer up to date
 
 (provide 'interface)
 ;;; interface.el ends here

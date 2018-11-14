@@ -10,8 +10,6 @@
 (require 'color-theme-sanityinc-solarized)
 (color-theme-sanityinc-solarized--with-colors
  'dark
- (defface buffer-info-face
-   `((t (:foreground ,normal :background ,alt-background))) "")
  (defface buffer-name-face
    `((t (:foreground ,background :background ,magenta))) "")
  (defface major-mode-face
@@ -22,8 +20,7 @@
    `((t (:foreground ,background :background ,blue))) ""))
 
 (setq telephone-line-faces
-      '((buffer-info . (buffer-info-face . buffer-info-face))
-        (buffer-name . (buffer-name-face . buffer-name-face))
+      '((buffer-name . (buffer-name-face . buffer-name-face))
         (major . (major-mode-face . major-mode-face))
         (vc . (vc-face . vc-face))
         (linum . (linum-face . linum-face))
@@ -40,15 +37,10 @@
 
 
 ;; Custom segments
-(telephone-line-defsegment my-buffer-info-segment ()
-  '(""
-    mode-line-mule-info
-    mode-line-modified
-    mode-line-client
-    mode-line-remote
-    mode-line-frame-identification))
 (telephone-line-defsegment my-buffer-name-segment ()
-  (telephone-line-raw mode-line-buffer-identification t))
+  (concat
+   (telephone-line-raw mode-line-buffer-identification t)
+   (telephone-line-raw mode-line-modified t)))
 
 ;; Based on https://github.com/dbordak/telephone-line/issues/68#issuecomment-393781601
 (telephone-line-defsegment* my-vc-info-segment ()
@@ -70,8 +62,7 @@
 
 ;; Segments
 (setq telephone-line-lhs
-      '((nil . (my-buffer-info-segment))
-        (buffer-name . (my-buffer-name-segment
+      '((buffer-name . (my-buffer-name-segment
                         telephone-line-process-segment))
         (major . (telephone-line-major-mode-segment))
         (vc . (my-vc-info-segment))

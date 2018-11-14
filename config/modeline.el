@@ -16,11 +16,7 @@
    `((t (:foreground ,background :background ,magenta))) "")
  (defface major-mode-face
    `((t (:foreground ,background :background ,blue))) "")
- (defface minor-mode-face
-   `((t (:foreground ,background :background ,violet))) "")
  (defface vc-face
-   `((t (:foreground ,background :background ,green))) "")
- (defface battery-face
    `((t (:foreground ,background :background ,green))) "")
  (defface linum-face
    `((t (:foreground ,background :background ,blue))) ""))
@@ -29,9 +25,7 @@
       '((buffer-info . (buffer-info-face . buffer-info-face))
         (buffer-name . (buffer-name-face . buffer-name-face))
         (major . (major-mode-face . major-mode-face))
-        (minor . (minor-mode-face . minor-mode-face))
         (vc . (vc-face . vc-face))
-        (battery . (battery-face . battery-face))
         (linum . (linum-face . linum-face))
         (evil . telephone-line-evil-face)
         (accent . (telephone-line-accent-active . telephone-line-accent-inactive))
@@ -74,49 +68,20 @@
                               'face `(:height 0.9)))))
       (t (format "%s" vc-mode)))))
 
-(require 'battery)
-(display-battery-mode 1)
-(setq battery-mode-line-format "%b%p%%%")
-(telephone-line-defsegment my-battery-segment ()
-  (telephone-line-raw
-   (battery-format battery-mode-line-format (funcall battery-status-function))))
-
-(defun update-battery-faces ()
-  "Update the status of the battery in the mode line."
-  (let ((battery-level (string-to-number (battery-format "%p" (funcall battery-status-function)))))
-    (color-theme-sanityinc-solarized--with-colors 'dark
-    (cond ((< battery-level battery-load-critical)
-           (set-face-attribute 'battery-face nil :background red))
-          ((< battery-level battery-load-low)
-           (set-face-attribute 'battery-face nil :background orange))
-          (t
-           (set-face-attribute 'battery-face nil :background green))))))
-
-(advice-add 'battery-update :after #'update-battery-faces)
-
 ;; Segments
 (setq telephone-line-lhs
       '((nil . (my-buffer-info-segment))
         (buffer-name . (my-buffer-name-segment
                         telephone-line-process-segment))
         (major . (telephone-line-major-mode-segment))
-        (minor . (telephone-line-minor-mode-segment))
         (vc . (my-vc-info-segment))
         (nil . (telephone-line-narrow-segment))))
 (setq telephone-line-rhs
       '((nil . (telephone-line-narrow-segment))
-        (battery . (my-battery-segment))
         (linum . (telephone-line-airline-position-segment))))
 
 ;; Turn on telephone-line
 (telephone-line-mode t)
-
-;; Reduce mode-line clutter
-(require 'diminish)
-(diminish 'flyspell-mode)
-(diminish 'yas-minor-mode)
-(diminish 'subword-mode)
-(diminish 'auto-complete-mode)
 
 (provide 'modeline)
 ;;; modeline.el ends here

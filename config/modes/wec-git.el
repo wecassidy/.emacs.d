@@ -1,4 +1,4 @@
-;;; ~/.emacs.d/config/git.el --- settings for git and magit
+;;; wec-git.el --- settings for git and magit
 
 ;;; Commentary:
 ;; See also ~/.gitconfig and ~/.gitignore_global
@@ -9,5 +9,5 @@
 (setq git-commit-major-mode 'org-mode)
 (setq magit-completing-read-function 'magit-ido-completing-read) ; Use ido
 
-(provide 'git.el)
-;;; git.el ends here
+(provide 'wec-git)
+;;; wec-git.el ends here

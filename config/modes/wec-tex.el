@@ -1,5 +1,6 @@
-;;; ~/.emacs.d/config/lang/tex.el: settings for TeX and Asymptote
-
+;;; wec-tex.el --- settings for TeX and Asymptote
+;;; Commentary:
+;;; Code:
 ;; TeX
 (require 'latex)
 (setq TeX-auto-save t)
@@ -14,7 +15,7 @@
                              (add-to-list 'write-file-functions
                                           'delete-trailing-whitespace)))
 
-(setq TeX-PDF-mode t)
+(TeX-PDF-mode t)
 
 ;; Citations: ebib, BibLaTeX, and RefTeX
 (require 'ebib)
@@ -32,6 +33,32 @@
 (require 'reftex)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
+
+(defvar my-reftex-cite-format-helpstrings
+  '((biblatex
+     (?\C-m . "author year/title")
+     (?C    . "year/title")
+     (?t    . "author (year/title)")
+     (?T    . "")
+     (?p    . "(author year/title)")
+     (?P    . "(year/title)")
+     (?f    . "\\cite in footnote")
+     (?s    . "\\footcite in body, \\parencite in footnote")
+     (?u    . "move punctuation as required")
+     (?U    . "move punctuation as required, use starred form")
+     (?a    . "author(s)")
+     (?A    . "author (et al.)")
+     (?i    . "title (shortened, if available)")
+     (?I    . "full title")
+     (?y    . "year")
+     (?Y    . "all date information")
+     (?n    . "add to bibliography"))))
+
+(defun my-get-reftex-cite-help (format key)
+  "Return the correct citation format example for the given format and key"
+  (if (assq key (assq format my-reftex-cite-format-helpstrings))
+      (cdr (assq key (assq format my-reftex-cite-format-helpstrings)))
+    ""))
 
 ;; Don't autofill in certain environments (from
 ;; https://tex.stackexchange.com/a/69556/69731)
@@ -117,3 +144,6 @@ used to fill a paragraph to `my-LaTeX-auto-fill-function'."
 
 ;; Faces
 (setq font-latex-fontify-sectioning 'color)
+
+(provide 'wec-tex)
+;;; wec-tex.el ends here

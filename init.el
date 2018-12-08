@@ -20,6 +20,9 @@
 ;; UI (theme, fonts, cursor, etc.)
 (require 'interface)
 
+;; Editing
+(require 'editing)
+
 ;; Programming
 (require 'code)
 
@@ -34,13 +37,6 @@
           "/usr/texbin" ":" "/usr/local/bin" ":"
           (getenv "PATH")))
 
-;; Turn on modes
-(delete-selection-mode)
-(global-hl-line-mode)
-
-;; Disable startup screen
-(setq inhibit-startup-screen t)
-
 ;; Save backup and autosave files to temporary-file-directory, not the current directory
 (setq temporary-file-directory "~/tmp/emacs")
 (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
@@ -52,19 +48,20 @@
 (setq doc-view-continuous t)
 
 ;; Mode-specific customizations
-(load-file "~/.emacs.d/config/modes/wec-arduino.el")
+(require 'wec-arduino)
+(require 'wec-calc)
 (require 'wec-cpp)
 (require 'wec-csharp)
-(load-file "~/.emacs.d/config/modes/wec-dired.el")
-(load-file "~/.emacs.d/config/modes/wec-git.el")
-(load-file "~/.emacs.d/config/modes/wec-java.el")
-(load-file "~/.emacs.d/config/modes/wec-json.el")
+(require 'wec-dired)
+(require 'wec-git)
+(require 'wec-java)
+(require 'wec-json)
 (require 'wec-org)
 (require 'wec-py)
 (require 'wec-r)
-(load-file "~/.emacs.d/config/modes/wec-sh.el")
-(load-file "~/.emacs.d/config/modes/wec-tex.el")
-(load-file "~/.emacs.d/config/modes/wec-text.el")
+(require 'wec-sh)
+(require 'wec-tex)
+(require 'wec-text)
 (require 'wec-web)
 
 (custom-set-variables
@@ -77,7 +74,7 @@
     ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
  '(package-selected-packages
    (quote
-    (ido-describe-bindings ido-vertical-mode flx-ido ido-completing-read+ smex better-defaults flycheck-pycheckers csharp-mode 2048-game yasnippet-snippets visual-regexp-steroids jedi-direx flycheck-status-emoji yaml-mode jedi python-docstring telephone-line gulp-task-runner use-package diminish rainbow-mode pymacs arduino-mode gitignore-mode ebib web-mode-edit-element slime scss-mode markdown-mode magit latex-extra json-mode jinja2-mode jdee java-snippets java-imports ess emmet-mode csv-mode common-lisp-snippets color-theme-sanityinc-solarized cdlatex auto-package-update apache-mode)))
+    (shift-number ido-describe-bindings ido-vertical-mode flx-ido ido-completing-read+ smex better-defaults flycheck-pycheckers csharp-mode 2048-game yasnippet-snippets visual-regexp-steroids jedi-direx flycheck-status-emoji yaml-mode jedi python-docstring telephone-line gulp-task-runner use-package diminish rainbow-mode pymacs arduino-mode gitignore-mode ebib web-mode-edit-element slime scss-mode markdown-mode magit latex-extra json-mode jinja2-mode jdee java-snippets java-imports ess emmet-mode csv-mode common-lisp-snippets color-theme-sanityinc-solarized cdlatex auto-package-update apache-mode)))
  '(send-mail-function (quote smtpmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -4,9 +4,6 @@
 ;; Enables ido, loads the theme, load mode-line customization, etc.
 
 ;;; Code:
-;; Disable startup screen
-(setq inhibit-startup-screen t)
-
 ;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'sanityinc-solarized-dark t)

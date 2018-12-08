@@ -12,6 +12,10 @@
 (add-to-list 'load-path (directory-file-name "~/.emacs.d/config/"))
 (add-to-list 'load-path (directory-file-name "~/.emacs.d/config/modes/"))
 
+;; Disable startup screen
+(setq inhibit-startup-screen t)
+(setq initial-buffer-choice "~") ; Dired ~/ on startup
+
 ;; Packages
 (load-file "~/.emacs.d/config/packages.el")
 

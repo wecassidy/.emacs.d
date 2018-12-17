@@ -14,6 +14,8 @@
    `((t (:foreground ,background :background ,magenta))) "")
  (defface major-mode-face
    `((t (:foreground ,background :background ,blue))) "")
+ (defface minor-mode-face
+   `((t (:foreground ,background :background ,violet))) "")
  (defface vc-face
    `((t (:foreground ,background :background ,green))) "")
  (defface linum-face
@@ -22,6 +24,7 @@
 (setq telephone-line-faces
       '((buffer-name . (buffer-name-face . buffer-name-face))
         (major . (major-mode-face . major-mode-face))
+        (minor . (minor-mode-face . minor-mode-face))
         (vc . (vc-face . vc-face))
         (linum . (linum-face . linum-face))
         (evil . telephone-line-evil-face)
@@ -65,11 +68,20 @@
       '((buffer-name . (my-buffer-name-segment
                         telephone-line-process-segment))
         (major . (telephone-line-major-mode-segment))
+        (minor . (telephone-line-minor-mode-segment))
         (vc . (my-vc-info-segment))
         (nil . (telephone-line-narrow-segment))))
 (setq telephone-line-rhs
       '((nil . (telephone-line-narrow-segment))
         (linum . (telephone-line-airline-position-segment))))
+
+;; Reduce mode-line clutter
+(require 'diminish)
+(diminish 'flyspell-mode)
+(diminish 'yas-minor-mode)
+(diminish 'subword-mode)
+(diminish 'auto-complete-mode)
+(diminish 'highlight-indent-guides-mode)
 
 ;; Turn on telephone-line
 (telephone-line-mode t)

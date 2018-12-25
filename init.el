@@ -79,6 +79,13 @@
  '(package-selected-packages
    (quote
     (shift-number ido-describe-bindings ido-vertical-mode flx-ido ido-completing-read+ smex better-defaults flycheck-pycheckers csharp-mode 2048-game yasnippet-snippets visual-regexp-steroids jedi-direx flycheck-status-emoji yaml-mode jedi python-docstring telephone-line gulp-task-runner use-package diminish rainbow-mode pymacs arduino-mode gitignore-mode ebib web-mode-edit-element slime scss-mode markdown-mode magit latex-extra json-mode jinja2-mode jdee java-snippets java-imports ess emmet-mode csv-mode common-lisp-snippets color-theme-sanityinc-solarized cdlatex auto-package-update apache-mode)))
+ '(safe-local-variable-values
+   (quote
+    ((dired-omit-files . "^\\(?:\\.adobe\\|\\.aspell\\(?:.\\|
+\\)+\\|\\.bash\\(?:.\\|
+\\)+\\|\\.cache\\|\\.cups\\|\\.dropbox\\(?:.\\|
+\\)*\\|\\.electron\\|\\.esd_auth\\|\\.fonts\\|\\.gnupg\\|\\.gphoto\\|\\.hplip\\|\\.ICEauthority\\|\\.ipython\\|\\.lesshst\\|\\.local\\|\\.macromedia\\|\\.mozilla\\|\\.node-gyp\\|\\.npm\\|\\.pki\\|\\.pylint\\.d\\|\\.python_history\\|\\.wget-hsts\\|\\.xournal\\|\\.zcompdump\\(?:.\\|
+\\)*\\|\\.zenmap\\)$"))))
  '(send-mail-function (quote smtpmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -60,6 +60,7 @@
 (require 'wec-git)
 (require 'wec-java)
 (require 'wec-json)
+(require 'wec-lisp)
 (require 'wec-org)
 (require 'wec-py)
 (require 'wec-r)

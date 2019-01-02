@@ -20,9 +20,6 @@
 ;; Remove trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; Lisp
-(setq inferior-lisp-program "ccl")
-
 ;; Autocomplete
 (ac-config-default)
 

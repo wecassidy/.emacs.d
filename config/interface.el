@@ -85,5 +85,11 @@
 	  '(lambda ()
 	     (ibuffer-auto-mode 1))) ; Keep ibuffer up to date
 
+;; Speedbar: a project browser thing
+(require 'sr-speedbar)
+(global-set-key (kbd "M-s M-s") 'sr-speedbar-toggle) ; open sr-speedbar with M-s M-s
+(setq sr-speedbar-right-side nil)
+(setq speedbar-use-images nil)
+
 (provide 'interface)
 ;;; interface.el ends here

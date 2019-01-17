@@ -125,15 +125,13 @@ used to fill a paragraph to `my-LaTeX-auto-fill-function'."
 (add-hook 'LaTeX-mode-hook 'mla-env)
 
 ;; Autocomplete
-(require 'auto-complete)
-(add-to-list 'ac-modes 'latex-mode)   ; make auto-complete aware of `latex-mode`
-
-(defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
-  (setq ac-sources
-     (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
-               ac-sources)))
-
-(add-hook 'TeX-mode-hook 'ac-latex-mode-setup)
+(require 'company)
+(require 'company-auctex)
+(company-auctex-init)
+(add-hook 'LaTeX-mode-hook (lambda () (add-to-list 'company-backends 'company-math-symbols-unicode
+                                              'company-math-symbols-latex
+                                              'company-latex-commands
+                                              'company-reftex)))
 
 ;; Asymptote
 (add-to-list 'load-path "/usr/local/share/asymptote")

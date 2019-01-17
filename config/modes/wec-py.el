@@ -16,12 +16,8 @@
 (setq python-docstring-sentence-end-double-space nil)
 
 ;; Autocomplete
-(require 'jedi)
-(setq jedi:server-command
-      (list "/usr/bin/python3" jedi:server-script))
-
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
+(require 'company)
+(add-hook 'python-mode-hook (lambda () (add-to-list 'company-backends 'company-jedi)))
 
 ;; Execute Pylint with Python 3
 (require 'flycheck-pycheckers)

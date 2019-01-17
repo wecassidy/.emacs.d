@@ -17,6 +17,9 @@
 
 (TeX-PDF-mode t)
 
+;; Automatically pair LaTeX tags ($)
+(add-hook 'LaTeX-mode-hook (lambda () (define-key LaTeX-mode-map (kbd "$") 'self-insert-command)))
+
 ;; Citations: ebib, BibLaTeX, and RefTeX
 (require 'ebib)
 (global-set-key "\C-ce" 'ebib)

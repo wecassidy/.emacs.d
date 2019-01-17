@@ -18,6 +18,7 @@
 (setq org-todo-keywords
       '((sequence "TODO(t)" "|" "DONE(d)")
         (sequence "BUG(b)" "WORKING(w)" "|" "FIXED(f)")))
+(setq org-use-fast-todo-selection 'prefix) ; Use a prefix argument to select todo keywords by single-letter
 (color-theme-sanityinc-solarized--with-colors
  'dark
  (setq org-todo-keyword-faces

@@ -13,6 +13,7 @@
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 (setq highlight-indent-guides-method 'character)
 (setq highlight-indent-guides-character ?\|)
+(setq highlight-indent-guides-responsive 'top)
 
 ;; Don't softwrap
 (set-default 'truncate-lines t)

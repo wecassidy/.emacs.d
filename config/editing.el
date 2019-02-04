@@ -31,6 +31,13 @@ line."
 (global-set-key (kbd "C-c C-+") 'shift-number-up)
 (global-set-key (kbd "C-c C--") 'shift-number-down)
 
+;; Insert the date at point
+(defun wec-insert-date ()
+  "Insert the current date in ISO 8601 (i.e. yyyy-mm-dd) format."
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d")))
+(global-set-key (kbd "C-c d") 'wec-insert-date)
+
 ;; Better regexes
 (require 'visual-regexp-steroids)
 (define-key global-map (kbd "C-c r") 'vr/replace)

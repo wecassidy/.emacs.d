@@ -131,10 +131,10 @@ used to fill a paragraph to `my-LaTeX-auto-fill-function'."
 (require 'company)
 (require 'company-auctex)
 (company-auctex-init)
-(add-hook 'LaTeX-mode-hook (lambda () (add-to-list 'company-backends 'company-math-symbols-unicode
-                                              'company-math-symbols-latex
-                                              'company-latex-commands
-                                              'company-reftex)))
+(add-hook 'LaTeX-mode-hook (lambda ()
+                             (add-to-list 'company-backends 'company-math-symbols-unicode)
+                             (add-to-list 'company-backends 'company-math-symbols-latex)
+                             (add-to-list 'company-backends 'company-latex-commands)))
 
 ;; Asymptote
 (add-to-list 'load-path "/usr/local/share/asymptote")

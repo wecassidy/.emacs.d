@@ -87,9 +87,18 @@
 
 ;; Speedbar: a project browser thing
 (require 'sr-speedbar)
-(global-set-key (kbd "M-s M-s") 'sr-speedbar-toggle) ; open sr-speedbar with M-s M-s
+
+(defun wec-speedbar-open-or-switch ()
+  "Switch to speedbar, opening if required."
+  (interactive)
+  (if (sr-speedbar-exist-p)
+      (sr-speedbar-select-window)
+    (sr-speedbar-open)))
+(global-set-key (kbd "M-s M-s") 'wec-speedbar-open-or-switch) ; open sr-speedbar with M-s M-s
+
 (setq sr-speedbar-right-side nil)
 (setq speedbar-use-images nil)
+(setq sr-speedbar-skip-other-window-p t)
 
 (provide 'interface)
 ;;; interface.el ends here

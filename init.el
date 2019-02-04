@@ -54,8 +54,7 @@
 ;; Mode-specific customizations
 (require 'wec-arduino)
 (require 'wec-calc)
-(require 'wec-cpp)
-(require 'wec-csharp)
+(require 'wec-cmodes)
 (require 'wec-dired)
 (require 'wec-git)
 (require 'wec-java)

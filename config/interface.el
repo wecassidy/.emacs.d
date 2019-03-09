@@ -5,7 +5,6 @@
 
 ;;; Code:
 ;; Theme
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'sanityinc-solarized-dark t)
 
 ;; Mode line
@@ -26,7 +25,6 @@
 
 ;; Line/column numbers
 (global-linum-mode t)
-(column-number-mode t)
 
 ;; Highlight current line
 (global-hl-line-mode)

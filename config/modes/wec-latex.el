@@ -1,4 +1,4 @@
-;;; wec-tex.el --- settings for TeX and Asymptote
+;;; wec-latex.el --- settings for TeX and Asymptote
 ;;; Commentary:
 ;;; Code:
 ;; TeX
@@ -6,14 +6,8 @@
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 
-(add-hook 'LaTeX-mode-hook 'visual-line-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
-(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
-(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-(add-hook 'LaTeX-mode-hook (lambda ()
-                             (add-to-list 'write-file-functions
-                                          'delete-trailing-whitespace)))
 
 (TeX-PDF-mode t)
 
@@ -23,12 +17,12 @@
 ;; Citations: ebib, BibLaTeX, and RefTeX
 (require 'ebib)
 (global-set-key "\C-ce" 'ebib)
-(setq ebib-layout 'custom)
 (setq ebib-bibtex-dialect 'biblatex)
 (setq ebib-autogenerate-keys t)
 (add-hook 'ebib-mode-hook '(add-to-list 'ebib-file-associations
                                         '("pdf" . "evince")))
 (setq ebib-keywords-file "ebib-keywords.txt")
+(setq ebib-layout 'custom)
 (setq ebib-index-columns '(("Author/Editor" 40 t)
                            ("Year" 6 t)
                            ("Title" 50 t)))
@@ -136,13 +130,6 @@ used to fill a paragraph to `my-LaTeX-auto-fill-function'."
                              (add-to-list 'company-backends 'company-math-symbols-latex)
                              (add-to-list 'company-backends 'company-latex-commands)))
 
-;; Asymptote
-(add-to-list 'load-path "/usr/local/share/asymptote")
-(autoload 'asy-mode "asy-mode.el" "Asymptote major mode." t)
-(autoload 'lasy-mode "asy-mode.el" "hybrid Asymptote/Latex major mode." t)
-(autoload 'asy-insinuate-latex "asy-mode.el" "Asymptote insinuate LaTeX." t)
-(add-to-list 'auto-mode-alist '("\\.asy$" . asy-mode))
-
 ;; Faces
 (require 'font-latex)
 (setq font-latex-fontify-sectioning 'color)
@@ -160,5 +147,5 @@ used to fill a paragraph to `my-LaTeX-auto-fill-function'."
 ;;           (lambda ()
 ;;             (face-remap-add-relative 'font-lock-keyword-face '(:family "Monospace"))))
 
-(provide 'wec-tex)
-;;; wec-tex.el ends here
+(provide 'wec-latex)
+;;; wec-latex.el ends here

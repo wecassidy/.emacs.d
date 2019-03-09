@@ -17,7 +17,7 @@
 
 ;; Autocomplete
 (require 'company)
-(add-hook 'python-mode-hook (lambda () (add-to-list 'company-backends 'company-jedi)))
+;(add-hook 'python-mode-hook (lambda () (add-to-list 'company-backends 'company-jedi)))
 
 ;; Execute Pylint with Python 3
 (require 'flycheck-pycheckers)

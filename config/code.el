@@ -98,6 +98,7 @@
 (advice-add 'show-paren--default :after-until #'show-paren--match-quotes)
 
 ;; Parenthesis matching face
+(require 'color-theme-sanityinc-solarized)
 (color-theme-sanityinc-solarized--with-colors
  'dark
  (set-face-attribute 'show-paren-match nil
@@ -120,14 +121,6 @@
 (add-hook 'prog-mode-hook (lambda ()
                             (subword-mode) ; M-f/M-b through camelCase correctly
                             (flyspell-prog-mode))) ; Spellcheck for coding
-
-;; Prettify symbols
-(global-prettify-symbols-mode)
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (push '("!=" . ?≠) prettify-symbols-alist)
-            (push '("<=" . ?≤) prettify-symbols-alist)
-            (push '(">=" . ?≥) prettify-symbols-alist)))
 
 (provide 'code)
 ;;; code.el ends here

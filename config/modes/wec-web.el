@@ -20,6 +20,7 @@
 (add-hook 'web-mode-hook 'web-mode-custom-hook)
 (add-hook 'web-mode-hook 'emmet-mode)
 
+(setq json-reformat:indent 2)
 (setq js-indent-level 2)
 
 ;; Use web-mode for HTML, CSS, JS, and PHP files

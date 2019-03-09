@@ -21,6 +21,29 @@
  (defface linum-face
    `((t (:foreground ,background :background ,blue))) ""))
 
+(defun set-modeline-faces (solarized-mode)
+  "Advice to set the modeline faces when switching from light to dark.
+`solarized-mode' will contain the color scheme function, so
+checking it determines light or dark."
+  (color-theme-sanityinc-solarized--with-colors
+   solarized-mode
+   (set-face-attribute 'buffer-name-face nil
+                        :foreground background)
+   (set-face-attribute 'major-mode-face nil
+                        :foreground background)
+   (set-face-attribute 'minor-mode-face nil
+                        :foreground background)
+   (set-face-attribute 'vc-face nil
+                        :foreground background)
+   (set-face-attribute 'linum-face nil
+                       :foreground background)))
+
+(defun set-modeline-faces-dark () (set-modeline-faces 'dark))
+(defun set-modeline-faces-light () (set-modeline-faces 'light))
+
+(advice-add 'color-theme-sanityinc-solarized-light :after #'set-modeline-faces-light)
+(advice-add 'color-theme-sanityinc-solarized-dark :after #'set-modeline-faces-dark)
+
 (setq telephone-line-faces
       '((buffer-name . (buffer-name-face . buffer-name-face))
         (major . (major-mode-face . major-mode-face))
@@ -75,6 +98,9 @@
       '((nil . (telephone-line-narrow-segment))
         (linum . (telephone-line-airline-position-segment))))
 
+;; Turn on telephone-line
+(telephone-line-mode t)
+
 ;; Reduce mode-line clutter
 (require 'diminish)
 (diminish 'flyspell-mode)
@@ -82,9 +108,6 @@
 (diminish 'subword-mode)
 (diminish 'auto-complete-mode)
 (diminish 'highlight-indent-guides-mode)
-
-;; Turn on telephone-line
-(telephone-line-mode t)
 
 (provide 'modeline)
 ;;; modeline.el ends here

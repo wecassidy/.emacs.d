@@ -144,7 +144,21 @@ used to fill a paragraph to `my-LaTeX-auto-fill-function'."
 (add-to-list 'auto-mode-alist '("\\.asy$" . asy-mode))
 
 ;; Faces
+(require 'font-latex)
 (setq font-latex-fontify-sectioning 'color)
+;(eval-after-load "font-latex"
+;  (progn
+    (set-face-attribute 'font-latex-bold-face nil
+                        :foreground nil)
+    (set-face-attribute 'font-latex-italic-face nil
+                        :foreground nil
+                        :italic t)
+    (set-face-attribute 'font-latex-math-face nil
+                        :family "Inconsolata")
+(add-hook 'LaTeX-mode-hook 'variable-pitch-mode)
+;; (add-hook 'LaTeX-mode-hook
+;;           (lambda ()
+;;             (face-remap-add-relative 'font-lock-keyword-face '(:family "Monospace"))))
 
 (provide 'wec-tex)
 ;;; wec-tex.el ends here

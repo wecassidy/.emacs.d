@@ -2,30 +2,44 @@
 ;;; Commentary:
 ;;; Code:
 ;; TeX
-(require 'latex)
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-(add-hook 'LaTeX-mode-hook #'latex-extra-mode)
-
-(TeX-PDF-mode t)
-
-;; Automatically pair LaTeX tags ($)
-(add-hook 'LaTeX-mode-hook (lambda () (define-key LaTeX-mode-map (kbd "$") 'self-insert-command)))
+(use-package latex
+  :defer t
+  :init
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  :bind (("C-c b" . (lambda () (interactive) (TeX-font nil ?\C-b))) ; Bold
+         ("C-c i" . (lambda () (interactive) (TeX-font nil ?\C-e))) ; Italic
+         ("C-c s" . (lambda () (interactive) (TeX-font nil ?\C-c))) ; Smallcaps
+         ("C-c t" . (lambda () (interactive) (TeX-font nil ?\C-t)))) ; Typewriter
+  :config
+  (use-package latex-math-mode
+    :hook latex-mode)
+  (use-package latex-extra-mode
+    :hook latex-mode)
+  (use-package company-auctex
+    :config
+    (company-auctex-init)
+    :hook (latex-mode . (lambda ()
+                          (add-to-list 'company-backends 'company-math-symbols-unicode)
+                          (add-to-list 'company-backends 'company-math-symbols-latex)
+                          (add-to-list 'company-backends 'company-latex-commands))))
+  (tex-pdf-mode t)
+  :hook (latex-mode . (lambda ()
+                        (define-key LaTeX-mode-map (kbd "$") 'self-insert-command))))
 
 ;; Citations: ebib, BibLaTeX, and RefTeX
-(require 'ebib)
-(global-set-key "\C-ce" 'ebib)
-(setq ebib-bibtex-dialect 'biblatex)
-(setq ebib-autogenerate-keys t)
-(add-hook 'ebib-mode-hook '(add-to-list 'ebib-file-associations
-                                        '("pdf" . "evince")))
-(setq ebib-keywords-file "ebib-keywords.txt")
-(setq ebib-layout 'custom)
-(setq ebib-index-columns '(("Author/Editor" 40 t)
-                           ("Year" 6 t)
-                           ("Title" 50 t)))
+(use-package ebib
+  :bind (("C-c e" . ebib))
+  :init
+  (setq ebib-bibtex-dialect 'biblatex)
+  (setq ebib-autogenerate-keys t)
+  (setq ebib-keywords-file "ebib-keywords.txt")
+  (setq ebib-layout 'custom)
+  (setq ebib-index-columns '(("Author/Editor" 40 t)
+                             ("Year" 6 t)
+                             ("Title" 50 t)))
+  :config
+  (add-to-list 'ebib-file-associations '("pdf" . "evince")))
 
 (require 'reftex)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
@@ -85,50 +99,6 @@ used to fill a paragraph to `my-LaTeX-auto-fill-function'."
   (setq auto-fill-function 'my-LaTeX-auto-fill-function))
 
 (add-hook 'LaTeX-mode-hook 'my-LaTeX-setup-auto-fill)
-
-;; Key bindings
-(defun tex-bold ()
-  (interactive)
-  (TeX-font nil ?\C-b))
-
-(defun tex-italic ()
-  (interactive)
-  (TeX-font nil ?\C-e))
-
-(defun tex-smallcaps ()
-  (interactive)
-  (TeX-font nil ?\C-c))
-
-(defun tex-typewriter ()
-  (interactive)
-  (TeX-font nil ?\C-t))
-
-(defun tex-bindings-hook ()
-  (local-set-key "\C-cb" 'tex-bold)
-  (local-set-key "\C-ci" 'tex-italic)
-  (local-set-key "\C-cs" 'tex-smallcaps)
-  (local-set-key "\C-ct" 'tex-typewriter))
-
-(add-hook 'LaTeX-mode-hook 'tex-bindings-hook)
-
-;; MLA
-(defun mla-env ()
-    (TeX-add-style-hook
-     "latex"
-     (lambda ()
-       (LaTeX-add-environments
-        '("mla" "First" "Last" "Teacher" "Course" "Date" "Title")))))
-
-(add-hook 'LaTeX-mode-hook 'mla-env)
-
-;; Autocomplete
-(require 'company)
-(require 'company-auctex)
-(company-auctex-init)
-(add-hook 'LaTeX-mode-hook (lambda ()
-                             (add-to-list 'company-backends 'company-math-symbols-unicode)
-                             (add-to-list 'company-backends 'company-math-symbols-latex)
-                             (add-to-list 'company-backends 'company-latex-commands)))
 
 ;; Faces
 (require 'font-latex)

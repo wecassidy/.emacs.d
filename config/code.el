@@ -45,9 +45,12 @@
   `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
 
 ;; Yasnippet
-(require 'yasnippet)
-(yas-global-mode)
-(setq yas-prompt-functions '(yas-ido-prompt yas-x-prompt))
+(use-package yasnippet
+  :defer 1
+  :init
+  (setq yas-prompt-functions '(yas-ido-prompt yas-x-prompt))
+  :config
+  (yas-global-mode))
 
 ;;; Parentheses and other pairs
 ;; Auto-insert pairs

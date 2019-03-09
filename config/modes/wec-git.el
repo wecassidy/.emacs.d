@@ -4,10 +4,12 @@
 ;; See also ~/.gitconfig and ~/.gitignore_global
 
 ;;; Code:
-(require 'magit)
-(global-set-key (kbd "C-x g") 'magit-status)
-(setq git-commit-major-mode 'org-mode)
-(setq magit-completing-read-function 'magit-ido-completing-read) ; Use ido
+(use-package magit
+  :defer t
+  :bind (("C-x g" . 'magit-status))
+  :init
+  (setq git-commit-major-mode 'org-mode)
+  (setq magit-completing-read-function 'magit-ido-completing-read))
 
 (provide 'wec-git)
 ;;; wec-git.el ends here

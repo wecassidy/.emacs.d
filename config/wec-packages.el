@@ -7,15 +7,19 @@
 (add-to-list 'package-archive-priorities '("gnus . 1")) ; Prefer HTTPS GNU over other archives
 (package-initialize)
 
-;; Automatically update packages on startup
 (require 'use-package)
-(setq auto-package-update-interval 7)
-(auto-package-update-maybe) ; Update packages once per week
 
 ;; Use a better package menu
-(require 'paradox)
-(paradox-enable)
-(setq paradox-execute-asynchronously t) ; Update, install, etc in the background
+(use-package paradox
+  :defer 2
+  :init
+  (setq paradox-execute-asynchronously t)
+  :config
+  (paradox-enable))
+
+;; Automatically update packages on startup
+(setq auto-package-update-interval 7)
+(auto-package-update-maybe) ; Update packages once per week
 
 (provide 'wec-packages)
 ;;; wec-packages.el ends here

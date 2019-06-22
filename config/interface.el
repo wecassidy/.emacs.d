@@ -8,7 +8,9 @@
 (load-theme 'sanityinc-solarized-dark t)
 
 ;; Mode line
-(require 'modeline)
+(use-package doom-modeline
+      :ensure t
+      :hook (after-init . doom-modeline-mode))
 
 ;; Scrolling
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 4)))

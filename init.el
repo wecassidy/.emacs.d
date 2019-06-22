@@ -50,15 +50,11 @@
 (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
-;; doc-view-mode
-(require 'doc-view)
-(add-hook 'doc-view-mode-hook 'auto-revert-mode)
-(setq doc-view-continuous t)
-
 ;; Mode-specific customizations
 (require 'wec-arduino)
 (require 'wec-calc)
 (require 'wec-cmodes)
+(require 'wec-csv)
 (require 'wec-dired)
 (require 'wec-git)
 (require 'wec-java)

@@ -54,8 +54,12 @@
 
 ;;; Parentheses and other pairs
 ;; Auto-insert pairs
-(require 'electric)
-(electric-pair-mode)
+(use-package smartparens-config
+  :ensure smartparens
+  :config (show-smartparens-global-mode t)
+  (use-package smartparens-mode
+    :hook (prog-mode text-mode)))
+
 (electric-indent-mode)
 
 ;; Highlight matching parentheses

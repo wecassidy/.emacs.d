@@ -26,7 +26,7 @@
 (setq default-frame-alist '((fullscreen . maximized)))
 
 ;; Line/column numbers
-(global-linum-mode t)
+(global-display-line-numbers-mode)
 
 ;; Highlight current line
 (global-hl-line-mode)

@@ -17,7 +17,7 @@
                              (or (getenv "CC") "gcc")
                              (file-name-sans-extension file)
                              (or (getenv "CPPFLAGS") "-DDEBUG=9")
-                             (or (getenv "CFLAGS") "-pedantic -Wall -g")
+                             (or (getenv "CFLAGS") "-Wall -g")
 			     file))))))
 
 (add-hook 'c++-mode-hook
@@ -33,7 +33,7 @@
                              (or (getenv "CCC") "g++")
                              (file-name-sans-extension file)
                              (or (getenv "CPPFLAGS") "-DDEBUG=9")
-                             (or (getenv "CFLAGS") "-ansi -pedantic -Wall -g")
+                             (or (getenv "CFLAGS") "-Wall -g")
 			     file))))))
 
 (add-hook 'csharp-mode-hook
@@ -45,6 +45,7 @@
 ;; GDB
 (setq gdb-many-windows t)
 (setq gdb-show-main t)
+(add-hook 'gdb-mode-hook (lambda () (company-mode -1))) ; Disable company in GDB
 
 (provide 'wec-cmodes)
 ;;; wec-cmodes.el ends here

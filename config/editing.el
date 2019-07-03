@@ -46,5 +46,28 @@ line."
 (define-key esc-map (kbd "C-r") 'vr/isearch-backward) ;; C-M-r
 (define-key esc-map (kbd "C-s") 'vr/isearch-forward) ;; C-M-s
 
+(defun wec-return-in-pair (point)
+  "On return in a balanced pair, place point inside the pair, ready to edit.
+
+If | is point:
+  ... {|}
+becomes
+  ... {
+    |
+   }"
+  (interactive "*d")
+
+  (let ((syntax-class (car (syntax-after (- point 1))))
+        (pair-character (cdr (syntax-after (- point 1)))))
+    (if (and (equal syntax-class 4) ;; Open paren
+             (equal (char-after point) pair-character))
+        (progn
+          (newline-and-indent)
+          (previous-line)
+          (end-of-line)
+          (newline-and-indent))
+      (newline))))
+(global-set-key (kbd "RET") 'wec-return-in-pair)
+
 (provide 'editing)
 ;;; editing.el ends here

@@ -1,8 +1,13 @@
 # Blacklist everything
 *
+
 # Only track certain files
 !init.el
 !config/
 !config/*/
 !*.el
 !.gitignore
+
+# Re-blacklist some elisp
+srecode-map.el
+company-statistics-cache.el

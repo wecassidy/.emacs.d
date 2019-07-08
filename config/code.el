@@ -108,5 +108,50 @@
                             (subword-mode) ; M-f/M-b through camelCase correctly
                             (flyspell-prog-mode))) ; Spellcheck for coding
 
+;; Projectile
+(use-package projectile
+  :ensure t
+  :config
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
+
+;; LSP-mode
+(use-package lsp-mode
+  :hook (java-mode . lsp)
+  :commands lsp)
+
+;; optionally
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package company-lsp :commands company-lsp)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+;; optionally if you want to use debugger
+(use-package dap-mode)
+
+(require 'cc-mode)
+
+(use-package projectile :ensure t)
+(use-package yasnippet :ensure t)
+(use-package lsp-mode :ensure t)
+(use-package hydra :ensure t)
+(use-package company-lsp :ensure t)
+(use-package lsp-ui :ensure t)
+(use-package lsp-java :ensure t :after lsp
+  :config (add-hook 'java-mode-hook 'lsp))
+
+(use-package dap-mode
+  :ensure t :after lsp-mode
+  :config
+  (dap-mode t)
+  (dap-ui-mode t))
+
+(use-package dap-java :after (lsp-java))
+
+(color-theme-sanityinc-solarized--with-colors
+ 'dark
+ (set-face-attribute 'lsp-ui-sideline-code-action nil
+                     :foreground faint))
+
 (provide 'code)
 ;;; code.el ends here

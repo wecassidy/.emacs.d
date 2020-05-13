@@ -14,7 +14,7 @@
    'dark
    (set-face-attribute 'magit-diff-file-heading nil
                        :weight 'normal
-                       :foreground violet)))
+                       :foreground cyan)))
 
 (provide 'wec-git)
 ;;; wec-git.el ends here

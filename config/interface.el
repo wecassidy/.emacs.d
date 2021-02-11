@@ -41,10 +41,6 @@
 (setq ido-file-extensions-order
       '(t ".log" ".aux" ".bbl" ".bcf" ".blg" ".out" ".run.xml"))
 
-;; Show buffer list when splitting windows
-(dolist (split-command '(split-window-right split-window-below))
-  (advice-add split-command :after #'ido-switch-buffer))
-
 ;; Flexible matching in ido
 (require 'flx-ido)
 (flx-ido-mode 1)
@@ -104,6 +100,24 @@
 (setq sr-speedbar-right-side nil)
 (setq speedbar-use-images nil)
 (setq sr-speedbar-skip-other-window-p t)
+
+;; Show buffer list when splitting windows
+(defmacro split-and-open (split-command)
+  "Split the current window using SPLIT-COMMAND then prompt for a buffer."
+  `(lambda ()
+     (interactive)
+     (,split-command)
+     (ido-switch-buffer)))
+
+(define-key (current-global-map) [remap split-window-right] (split-and-open split-window-right))
+(define-key (current-global-map) [remap split-window-below] (split-and-open split-window-below))
+
+(require 'info-colors)
+(add-hook 'Info-selection-hook
+          (lambda ()
+            (variable-pitch-mode)
+            (info-colors-fontify-node)
+            (display-line-numbers-mode nil)))
 
 (provide 'interface)
 ;;; interface.el ends here

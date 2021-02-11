@@ -62,6 +62,7 @@
 (require 'wec-org)
 (require 'wec-py)
 (require 'wec-r)
+(require 'wec-rust)
 (require 'wec-sh)
 (require 'wec-text)
 (require 'wec-web)

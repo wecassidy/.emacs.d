@@ -2,6 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 
+;; Indent style
+(c-set-offset 'arglist-intro '+)
+(c-set-offset 'arglist-close 0)
+
 ;; Better default compile command - use a makefile if it exists, otherwise GCC/G++
 (require 'compile)
 (add-hook 'c-mode-hook

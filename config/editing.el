@@ -63,10 +63,10 @@ becomes
              (equal (char-after point) pair-character))
         (progn
           (newline-and-indent)
-          (previous-line)
+          (forward-line -1)
           (end-of-line)
           (newline-and-indent))
-      (newline))))
+      (newline-and-indent))))
 (global-set-key (kbd "RET") 'wec-return-in-pair)
 
 (provide 'editing)

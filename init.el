@@ -34,21 +34,33 @@
 ;; Programming
 (require 'code)
 
+(global-set-key (kbd "C-c C-q C-c") 'quick-calc)
+
 ;; Encoding - UTF-8
 (prefer-coding-system 'utf-8)
 (setq buffer-file-coding-system 'utf-8)
 
 ;; $PATH
-(setq exec-path (append exec-path '("/usr/local/bin" "/usr/texbin")))
+(setq exec-path (append exec-path '("/usr/local/bin" "/usr/texbin" "/home/wec/.local/bin" "/home/wec/.platformio/penv/bin" "/home/wec/.cargo/bin")))
 (setenv "PATH"
          (concat
-          "/usr/texbin" ":" "/usr/local/bin" ":"
+          "/usr/texbin" ":" "/usr/local/bin" ":" "/home/wec/.local/bin" ":" "/home/wec/.platformio/penv/bin" ":"
           (getenv "PATH")))
 
 ;; Save backup and autosave files to temporary-file-directory, not the current directory
 (setq temporary-file-directory "~/tmp/emacs")
 (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+;; PDFs
+(use-package pdf-tools
+   :pin manual
+   :config
+   (pdf-tools-install)
+   (setq-default pdf-view-display-size 'fit-width)
+   (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+   :custom
+   (pdf-annot-activate-created-annotations t "automatically annotate highlights"))
 
 ;; Mode-specific customizations
 (require 'wec-arduino)
@@ -77,11 +89,12 @@
     ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
  '(package-selected-packages
    (quote
-    (lsp-ui dap-mode company-lsp lsp-java doom-modeline nlinum powershell smartparens esup sr-speedbar company-quickhelp company company-arduino company-auctex company-jedi company-math company-reftex company-statistics company-web mines matlab-mode paradox shift-number ido-describe-bindings ido-vertical-mode flx-ido ido-completing-read+ smex better-defaults flycheck-pycheckers csharp-mode 2048-game yasnippet-snippets visual-regexp-steroids jedi-direx flycheck-status-emoji yaml-mode jedi python-docstring gulp-task-runner use-package diminish rainbow-mode pymacs arduino-mode gitignore-mode ebib web-mode-edit-element slime scss-mode markdown-mode magit latex-extra json-mode jinja2-mode java-snippets java-imports ess emmet-mode csv-mode common-lisp-snippets color-theme-sanityinc-solarized cdlatex auto-package-update apache-mode)))
+    (blacken magit flycheck-status-emoji company-statistics flycheck-irony platformio-mode nlinum sr-speedbar company-arduino company-reftex company-web mines shift-number ido-describe-bindings ido-vertical-mode flx-ido smex cdlatex auto-package-update)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
-    ((dired-omit-files . "^\\(?:\\.adobe\\|\\.aspell\\(?:.\\|
+    ((TeX-command-extra-options . "-shell-escape")
+     (dired-omit-files . "^\\(?:\\.adobe\\|\\.aspell\\(?:.\\|
 \\)+\\|\\.bash\\(?:.\\|
 \\)+\\|\\.cache\\|\\.cups\\|\\.dropbox\\(?:.\\|
 \\)*\\|\\.electron\\|\\.esd_auth\\|\\.fonts\\|\\.gnupg\\|\\.gphoto\\|\\.hplip\\|\\.ICEauthority\\|\\.ipython\\|\\.lesshst\\|\\.local\\|\\.macromedia\\|\\.mozilla\\|\\.node-gyp\\|\\.npm\\|\\.pki\\|\\.pylint\\.d\\|\\.python_history\\|\\.wget-hsts\\|\\.xournal\\|\\.zcompdump\\(?:.\\|
@@ -106,3 +119,4 @@
 
 (provide 'init.el)
 ;;; init.el ends here
+(put 'c-electric-semi&comma 'disabled nil)

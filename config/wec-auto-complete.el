@@ -18,15 +18,15 @@
 (setq company-quickhelp-use-propertized-text t)
 
 ;; Make the popup colours nicer
-(color-theme-sanityinc-solarized--with-colors
- 'dark
- (custom-set-faces
-  `(company-tooltip ((t (:inherit default :background ,alt-background))))
-  `(company-scrollbar-bg ((t (:background ,faint))))
-  `(company-scrollbar-fg ((t (:background ,strong))))
-  `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
-  `(company-tooltip-common ((t (:foreground ,blue))))
-  `(company-preview ((t (:foreground ,normal :background ,background :underline t))))))
+;; (color-theme-sanityinc-solarized--with-colors
+;;  'dark
+;;  (custom-set-faces
+;;   `(company-tooltip ((t (:inherit default :background ,alt-background))))
+;;   `(company-scrollbar-bg ((t (:background ,faint))))
+;;   `(company-scrollbar-fg ((t (:background ,strong))))
+;;   `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
+;;   `(company-tooltip-common ((t (:foreground ,blue))))
+;;   `(company-preview ((t (:foreground ,normal :background ,background :underline t))))))
 
 (provide 'wec-auto-complete)
 ;;; wec-auto-complete.el ends here

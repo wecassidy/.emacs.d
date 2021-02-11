@@ -5,7 +5,7 @@
 
 ;;; Code:
 ;; Theme
-(load-theme 'sanityinc-solarized-dark t)
+(load-theme 'doom-solarized-dark t)
 
 ;; Mode line
 (use-package doom-modeline

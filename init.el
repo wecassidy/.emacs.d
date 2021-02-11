@@ -60,7 +60,6 @@
 (require 'wec-latex)
 (require 'wec-lisp)
 (require 'wec-org)
-(require 'wec-platformio)
 (require 'wec-py)
 (require 'wec-r)
 (require 'wec-sh)

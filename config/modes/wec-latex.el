@@ -77,45 +77,5 @@
   '("equation" "equation*" "tabular" "tabular*")
   "A list of LaTeX environment names in which `auto-fill-mode' should be inhibited.")
 
-(defun my-LaTeX-auto-fill-function ()
-  "This function checks whether point is currently inside one of
-the LaTeX environments listed in
-`my-LaTeX-no-autofill-environments'. If so, it inhibits automatic
-filling of the current paragraph."
-  (let ((do-auto-fill t)
-        (current-environment "")
-        (level 0))
-    (while (and do-auto-fill (not (string= current-environment "document")))
-      (setq level (1+ level)
-            current-environment (LaTeX-current-environment level)
-            do-auto-fill (not (member current-environment my-LaTeX-no-autofill-environments))))
-    (when do-auto-fill
-      (do-auto-fill))))
-
-(defun my-LaTeX-setup-auto-fill ()
-  "This function turns on auto-fill-mode and sets the function
-used to fill a paragraph to `my-LaTeX-auto-fill-function'."
-  (auto-fill-mode)
-  (setq auto-fill-function 'my-LaTeX-auto-fill-function))
-
-(add-hook 'LaTeX-mode-hook 'my-LaTeX-setup-auto-fill)
-
-;; Faces
-(require 'font-latex)
-(setq font-latex-fontify-sectioning 'color)
-;(eval-after-load "font-latex"
-;  (progn
-    (set-face-attribute 'font-latex-bold-face nil
-                        :foreground nil)
-    (set-face-attribute 'font-latex-italic-face nil
-                        :foreground nil
-                        :italic t)
-    (set-face-attribute 'font-latex-math-face nil
-                        :family "Inconsolata")
-(add-hook 'LaTeX-mode-hook 'variable-pitch-mode)
-;; (add-hook 'LaTeX-mode-hook
-;;           (lambda ()
-;;             (face-remap-add-relative 'font-lock-keyword-face '(:family "Monospace"))))
-
 (provide 'wec-latex)
 ;;; wec-latex.el ends here

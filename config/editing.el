@@ -69,5 +69,9 @@ becomes
       (newline-and-indent))))
 (global-set-key (kbd "RET") 'wec-return-in-pair)
 
+;; undo-tree
+(require 'undo-tree)
+(global-undo-tree-mode)
+
 (provide 'editing)
 ;;; editing.el ends here

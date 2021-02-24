@@ -24,8 +24,18 @@
                           (add-to-list 'company-backends 'company-math-symbols-latex)
                           (add-to-list 'company-backends 'company-latex-commands))))
   (tex-pdf-mode t)
-  :hook (latex-mode . (lambda ()
-                        (define-key LaTeX-mode-map (kbd "$") 'self-insert-command))))
+  (use-package smartparens-latex))
+
+;; Starting/opening LaTeX files
+(defun make-latex (parent-dir name)
+  "Make a new LaTeX project. `parent-dir' is the parent directory,
+`name' is the name of the LaTeX"
+  (interactive "DLocation:\nMName:")
+  (let ((dir (expand-file-name name parent-dir))
+        (latex-file (concat name ".tex")))
+    (make-directory dir)
+    (magit-init dir)
+    (find-file (expand-file-name latex-file dir))))
 
 ;; Citations: ebib, BibLaTeX, and RefTeX
 (use-package ebib

@@ -7,6 +7,17 @@
 ;; Theme
 (load-theme 'doom-monokai-classic t)
 
+;; Basic fonts
+
+(when (member "JetBrains Mono" (font-family-list))
+  (set-face-attribute 'default nil :font "JetBrains Mono")
+  (set-face-attribute 'fixed-pitch nil :font "JetBrains Mono"))
+(when (member "Noto Sans" (font-family-list))
+  (set-face-attribute 'variable-pitch nil :font "Noto Sans"))
+
+;; Use Symbola as a backup when characters aren't found
+(set-fontset-font t nil "Symbola")
+
 ;; Mode line
 (use-package doom-modeline
       :ensure t
@@ -93,9 +104,6 @@ transpositions to execute in sequence."
 
 ;; Auto-insert text
 (add-hook 'find-file-hook 'auto-insert)
-
-;; Use Symbola as a backup when characters aren't found
-(set-fontset-font t nil "Symbola")
 
 ;; ibuffer: buffer list, but way more awesome
 (require 'ibuffer)

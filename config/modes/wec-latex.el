@@ -32,7 +32,15 @@
   "Set up fonts for latex editing: turn on variable pitch, set
   some fonts to monospace."
   (variable-pitch-mode t)
-  (prettify-symbols-mode))
+  (prettify-symbols-mode)
+  (dolist (face '(font-latex-math-face
+                  font-latex-sedate-face
+                  font-lock-function-name-face
+                  font-lock-keyword-face
+                  font-lock-constant-face
+                  font-latex-sedate-face))
+    (set-face-attribute face nil
+                        :inherit 'fixed-pitch)))
 
 ;; Starting/opening LaTeX files
 (defun make-latex (parent-dir name)

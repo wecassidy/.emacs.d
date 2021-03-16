@@ -3,28 +3,36 @@
 ;;; Code:
 ;; TeX
 (use-package latex
-  :defer t
+  :mode
+  ("\\.tex\\'" . latex-mode)
   :init
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
+  (add-hook 'LaTeX-mode-hook #'latex-font-setup)
   :bind (("C-c b" . (lambda () (interactive) (TeX-font nil ?\C-b))) ; Bold
          ("C-c i" . (lambda () (interactive) (TeX-font nil ?\C-e))) ; Italic
          ("C-c s" . (lambda () (interactive) (TeX-font nil ?\C-c))) ; Smallcaps
          ("C-c t" . (lambda () (interactive) (TeX-font nil ?\C-t)))) ; Typewriter
   :config
   (use-package latex-math-mode
-    :hook latex-mode)
+    :hook LaTeX-mode)
   (use-package latex-extra-mode
-    :hook latex-mode)
+    :hook LaTeX-mode)
   (use-package company-auctex
     :config
     (company-auctex-init)
-    :hook (latex-mode . (lambda ()
+    :hook (LaTeX-mode . (lambda ()
                           (add-to-list 'company-backends 'company-math-symbols-unicode)
                           (add-to-list 'company-backends 'company-math-symbols-latex)
                           (add-to-list 'company-backends 'company-latex-commands))))
   (tex-pdf-mode t)
   (use-package smartparens-latex))
+
+(defun latex-font-setup ()
+  "Set up fonts for latex editing: turn on variable pitch, set
+  some fonts to monospace."
+  (variable-pitch-mode t)
+  (prettify-symbols-mode))
 
 ;; Starting/opening LaTeX files
 (defun make-latex (parent-dir name)
@@ -80,12 +88,6 @@
   (if (assq key (assq format my-reftex-cite-format-helpstrings))
       (cdr (assq key (assq format my-reftex-cite-format-helpstrings)))
     ""))
-
-;; Don't autofill in certain environments (from
-;; https://tex.stackexchange.com/a/69556/69731)
-(defvar my-LaTeX-no-autofill-environments
-  '("equation" "equation*" "tabular" "tabular*")
-  "A list of LaTeX environment names in which `auto-fill-mode' should be inhibited.")
 
 (provide 'wec-latex)
 ;;; wec-latex.el ends here

@@ -8,6 +8,7 @@
   :init
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
+  (add-to-list 'display-line-numbers-exempt-modes 'latex-mode)
   (add-hook 'LaTeX-mode-hook #'latex-font-setup)
   :bind (("C-c b" . (lambda () (interactive) (TeX-font nil ?\C-b))) ; Bold
          ("C-c i" . (lambda () (interactive) (TeX-font nil ?\C-e))) ; Italic
@@ -40,7 +41,7 @@
 
 (use-package visual-line-mode
   :init
-  (add-to-list 'display-line-numbers-exempt-modes 'latex-mode)
+  (add-hook 'visual-line-mode-hook 'turn-off-auto-fill)
   :hook visual-fill-column-mode)
 
 (defun latex-font-setup ()

@@ -26,20 +26,33 @@
                           (add-to-list 'company-backends 'company-math-symbols-latex)
                           (add-to-list 'company-backends 'company-latex-commands))))
   (tex-pdf-mode t)
-  (use-package smartparens-latex))
+  (use-package smartparens-latex)
+  (add-hook 'LaTeX-mode-hook #'visual-fill-column-mode))
+
+(use-package visual-fill-column-mode
+  :init
+  (setq visual-fill-column-width 100)
+  :config
+  (visual-line-mode)
+  :hook (LaTeX-mode))
+
+(use-package visual-line-mode
+  :hook visual-fill-column-mode)
 
 (defun latex-font-setup ()
   "Set up fonts for latex editing: turn on variable pitch, set
   some fonts to monospace."
   (variable-pitch-mode t)
   (prettify-symbols-mode)
+  (face-remap-add-relative 'default nil :height 140)
+  (face-remap-add-relative 'fixed-pitch nil :height 140)
   (dolist (face '(font-latex-math-face
                   font-latex-sedate-face
                   font-lock-function-name-face
                   font-lock-keyword-face
                   font-lock-constant-face
                   font-latex-sedate-face))
-    (set-face-attribute face nil
+    (face-remap-add-relative face nil
                         :inherit 'fixed-pitch)))
 
 ;; Starting/opening LaTeX files

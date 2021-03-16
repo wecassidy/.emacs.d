@@ -32,11 +32,15 @@
 (use-package visual-fill-column-mode
   :init
   (setq visual-fill-column-width 100)
+  (setq visual-fill-column-center-text t)
+  (setq visual-fill-column-fringes-outside-margins t)
   :config
   (visual-line-mode)
   :hook (LaTeX-mode))
 
 (use-package visual-line-mode
+  :init
+  (add-to-list 'display-line-numbers-exempt-modes 'latex-mode)
   :hook visual-fill-column-mode)
 
 (defun latex-font-setup ()

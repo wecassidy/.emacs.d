@@ -38,6 +38,20 @@
 (setq-default window-combination-resize t)
 
 ;; Line/column numbers
+(require 'display-line-numbers)
+(defcustom display-line-numbers-exempt-modes '()
+  "Major modes on which to disable the linum mode, exempts them
+from global requirement"
+  :group 'display-line-numbers
+  :type 'list
+  :version "green")
+
+(defun display-line-numbers--turn-on ()
+  "Turn on line numbers but excempting certain major modes
+defined in `display-line-numbers-exempt-modes'"
+  (unless (or (member major-mode display-line-numbers-exempt-modes) (minibufferp))
+    (display-line-numbers-mode)))
+
 (global-display-line-numbers-mode)
 
 ;; Highlight current line

@@ -74,5 +74,23 @@ becomes
 (require 'undo-tree)
 (global-undo-tree-mode)
 
+;; Line wrapping
+(add-hook 'text-mode-hook 'turn-on-flyspell)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+(use-package visual-fill-column-mode
+  :init
+  (setq visual-fill-column-width 100)
+  (setq visual-fill-column-center-text t)
+  (setq visual-fill-column-fringes-outside-margins t)
+  :config
+  (visual-line-mode)
+  :hook (LaTeX-mode))
+
+(use-package visual-line-mode
+  :init
+  (add-hook 'visual-line-mode-hook 'turn-off-auto-fill)
+  :hook visual-fill-column-mode)
+
 (provide 'editing)
 ;;; editing.el ends here

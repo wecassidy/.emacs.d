@@ -30,20 +30,6 @@
   (use-package smartparens-latex)
   (add-hook 'LaTeX-mode-hook #'visual-fill-column-mode))
 
-(use-package visual-fill-column-mode
-  :init
-  (setq visual-fill-column-width 100)
-  (setq visual-fill-column-center-text t)
-  (setq visual-fill-column-fringes-outside-margins t)
-  :config
-  (visual-line-mode)
-  :hook (LaTeX-mode))
-
-(use-package visual-line-mode
-  :init
-  (add-hook 'visual-line-mode-hook 'turn-off-auto-fill)
-  :hook visual-fill-column-mode)
-
 (defun latex-font-setup ()
   "Set up fonts for latex editing: turn on variable pitch, set
   some fonts to monospace."

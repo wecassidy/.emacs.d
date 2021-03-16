@@ -76,7 +76,6 @@
 (require 'wec-r)
 (require 'wec-rust)
 (require 'wec-sh)
-(require 'wec-text)
 (require 'wec-web)
 
 (put 'upcase-region 'disabled nil)

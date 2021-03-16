@@ -5,6 +5,7 @@
 
 ;;; Code:
 (delete-selection-mode)
+(setq auto-save-default t)
 
 ;; Spellchecking
 (require 'ispell)

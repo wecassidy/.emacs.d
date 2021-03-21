@@ -77,6 +77,7 @@
 (require 'wec-rust)
 (require 'wec-sh)
 (require 'wec-web)
+(require 'a51-mode)
 
 (put 'upcase-region 'disabled nil)
 

@@ -74,14 +74,20 @@
 (defvar a51-registers-regexp (regexp-opt a51-registers-list 'words))
 
 (defvar a51-font-lock-defaults
-  `(((,a51-directives-regexp . font-lock-keyword-face)
+  `(((,a51-label-regexp 1 font-lock-type-face)
      (,a51-controls-regexp . font-lock-function-name-face)
+     (,a51-directives-regexp . font-lock-keyword-face)
      (,a51-mnemonics-regexp . font-lock-builtin-face)
-     (,a51-registers-regexp . font-lock-constant-face)
-     (,a51-label-regexp 1 font-lock-type-face))
+     (,a51-registers-regexp . font-lock-constant-face))
     nil
     t)
   "Syntax highlighting settings for A51.")
+
+(defvar a51-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map ":"		'a51-colon)
+    map)
+  "Keymap for a51-mode.")
 
 ;;;###autoload
 (define-derived-mode a51-mode prog-mode "A51 assembler"
@@ -89,6 +95,8 @@
 asm-mode, but hopefully faster."
   (setq-local indent-line-function #'a51-indent-line)
   (setq-local tab-width a51-indent-offset)
+
+  (use-local-map (nconc (make-sparse-keymap) a51-mode-map))
 
   (setq-local font-lock-defaults a51-font-lock-defaults)
   (setq-local comment-start ";")
@@ -130,6 +138,19 @@ first non-whitespace character."
    (and (looking-at a51-directives-regexp) 0)
    (and (looking-at ";;") 0)
    (indent-next-tab-stop 0))))
+
+(defun a51-colon ()
+  "On colon, autoindent so that labels go straight to the left
+  margin."
+  (interactive)
+  (call-interactively 'self-insert-command)
+  (let ((label-line-p (save-excursion
+                       (beginning-of-line)
+                       (skip-chars-forward "[:blank:]")
+                       (looking-at a51-label-regexp))))
+    (when label-line-p
+      (end-of-line)
+      (newline-and-indent))))
 
 (provide 'a51-mode)
 ;;; a51-mode.el ends here

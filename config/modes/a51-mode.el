@@ -136,7 +136,7 @@ first non-whitespace character."
   (or
    (and (looking-at a51-label-regexp) 0)
    (and (looking-at a51-controls-regexp) 0)
-   (and (looking-at a51-directives-regexp) 0)
+   (and (a51-directive-line-p) 0)
    (and (looking-at ";;") 0)
    (indent-next-tab-stop 0))))
 
@@ -162,6 +162,16 @@ instruction column, add a newline."
           (newline-and-indent)
         (delete-horizontal-space)
         (tab-to-tab-stop)))))
+
+(defun a51-directive-line-p ()
+  (save-excursion
+    (beginning-of-line)
+    (search-forward-regexp a51-directives-regexp)
+    (not (in-comment-p))))
+
+(defun in-comment-p ()
+  "Return non-nil if point is in a comment."
+  (nth 4 (syntax-ppss)))
 
 (provide 'a51-mode)
 ;;; a51-mode.el ends here

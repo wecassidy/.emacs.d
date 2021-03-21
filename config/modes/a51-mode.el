@@ -12,7 +12,8 @@
   :type 'hook
   :group 'a51)
 
-(defcustom a51-indent-offset 4 "Number of columns to indent in a51-mode."
+(defcustom a51-instruction-column 8
+  "Column for instructions."
   :type '(integer)
   :group 'a51)
 
@@ -85,7 +86,7 @@
 
 (defvar a51-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map ":"		'a51-colon)
+    (define-key map ":" 'a51-colon)
     map)
   "Keymap for a51-mode.")
 
@@ -94,7 +95,7 @@
   "Major mode for editing A51 assembly. Heavily patterned off
 asm-mode, but hopefully faster."
   (setq-local indent-line-function #'a51-indent-line)
-  (setq-local tab-width a51-indent-offset)
+  (setq-local tab-width a51-instruction-column)
 
   (use-local-map (nconc (make-sparse-keymap) a51-mode-map))
 
@@ -114,7 +115,7 @@ asm-mode, but hopefully faster."
 
 
 (defun a51-indent-line ()
-  "Auto-indent the current line."
+  "Auto-indent the current line using A51 semantics."
   (interactive)
   (let* ((savep (point))
         (indent (condition-case nil
@@ -140,17 +141,27 @@ first non-whitespace character."
    (indent-next-tab-stop 0))))
 
 (defun a51-colon ()
-  "On colon, autoindent so that labels go straight to the left
-  margin."
+  "Move labels to the left margin and move point to
+the instruction column. If the label is wider than the
+instruction column, add a newline."
   (interactive)
   (call-interactively 'self-insert-command)
-  (let ((label-line-p (save-excursion
-                       (beginning-of-line)
-                       (skip-chars-forward "[:blank:]")
-                       (looking-at a51-label-regexp))))
-    (when label-line-p
-      (end-of-line)
-      (newline-and-indent))))
+  (let ((at-label-p (save-excursion
+                      (backward-char)
+                      (skip-syntax-backward "w_") ; Move to start of symbol
+                      (skip-chars-backward "[:blank:]")
+                      (looking-at a51-label-regexp))))
+    (when at-label-p
+      ;; Kill indentation before the label
+      (save-excursion
+        (beginning-of-line)
+        (delete-horizontal-space))
+
+      ;; Move to the instruction column, inserting a newline if needed.
+      (if (>= (current-column) a51-instruction-column)
+          (newline-and-indent)
+        (skip-chars-forward "[:blank:]")
+        (tab-to-tab-stop)))))
 
 (provide 'a51-mode)
 ;;; a51-mode.el ends here

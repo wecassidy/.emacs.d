@@ -18,11 +18,11 @@
 
 ;; Syntax highlighting regexes
 (defcustom a51-directives-list
-  '("SEGMENT" "RSEG" "CSEG" "DSEG" "BSEG" "ISEG" "XSEG"
-    "EQU" "SET" "BIT" "CODE" "DATA" "IDATA" "XDATA"
-    "LIT" "DB" "DW" "DD" "DBIT" "DS" "DSB" "DSW" "DSD"
-    "PROC" "ENDP" "LABEL" "PUBLIC" "EXTRN" "EXTERN" "NAME"
-    "ORG" "EVEN" "USING" "END")
+  '("segment" "rseg" "cseg" "dseg" "bseg" "iseg" "xseg"
+    "equ" "set" "bit" "code" "data" "idata" "xdata"
+    "lit" "db" "dw" "dd" "dbit" "ds" "dsb" "dsw" "dsd"
+    "proc" "endp" "label" "public" "extrn" "extern" "name"
+    "org" "even" "using" "end")
   "A51 assembler directives"
   :type '(repeat regexp)
   :group 'a51)
@@ -69,30 +69,19 @@
   :type '(regexp)
   :group 'a51)
 
+(defvar a51-directives-regexp (regexp-opt a51-directives-list 'words))
+(defvar a51-mnemonics-regexp (regexp-opt a51-mnemonics-list 'words))
+(defvar a51-registers-regexp (regexp-opt a51-registers-list 'words))
+
 (defvar a51-font-lock-defaults
-  `(
-    ((,(regexp-opt a51-directives-list 'words) . font-lock-keyword-face)
+  `(((,a51-directives-regexp . font-lock-keyword-face)
      (,a51-controls-regexp . font-lock-function-name-face)
-     (,(regexp-opt a51-mnemonics-list 'words) . font-lock-builtin-face)
-     (,(regexp-opt a51-registers-list 'words) . font-lock-constant-face)
+     (,a51-mnemonics-regexp . font-lock-builtin-face)
+     (,a51-registers-regexp . font-lock-constant-face)
      (,a51-label-regexp 1 font-lock-type-face))
     nil
     t)
   "Syntax highlighting settings for A51.")
-
-(defvar a51-mode-syntax-table
-  (let ((st (make-syntax-table)))
-    ;; Comments
-    (modify-syntax-entry ?\; "< b" a51-mode-syntax-table)
-    (modify-syntax-entry ?\n "> b" a51-mode-syntax-table)
-
-    ;; Single quotes only
-    (modify-syntax-entry ?\' "\"")
-    (modify-syntax-entry ?\" "w")
-
-    (modify-syntax-entry ?$ "'") ; assembler controls
-    )
-  "How a51-mode interprets special characters.")
 
 ;;;###autoload
 (define-derived-mode a51-mode prog-mode "A51 assembler"
@@ -103,15 +92,26 @@ asm-mode, but hopefully faster."
 
   (setq-local font-lock-defaults a51-font-lock-defaults)
   (setq-local comment-start ";")
-  (setq-local comment-end ""))
+  (setq-local comment-end "")
+  ;; Comments
+  (modify-syntax-entry ?\; "< b" a51-mode-syntax-table)
+  (modify-syntax-entry ?\n "> b" a51-mode-syntax-table)
+
+  ;; Single quotes only
+  (modify-syntax-entry ?\' "\"" a51-mode-syntax-table)
+  (modify-syntax-entry ?\" "w" a51-mode-syntax-table)
+
+  (modify-syntax-entry ?$ "'" a51-mode-syntax-table) ; assembler controls
+  )
+
 
 (defun a51-indent-line ()
   "Auto-indent the current line."
   (interactive)
-  (let ((savep (point))
+  (let* ((savep (point))
         (indent (condition-case nil
                     (save-excursion
-                      (forward-line 0)
+                      (beginning-of-line)
                       (skip-chars-forward "[:blank:]")
                       (if (>= (point) savep) (setq savep nil))
                       (max (a51-calculate-indentation) 0))
@@ -121,10 +121,15 @@ asm-mode, but hopefully faster."
       (indent-line-to indent))))
 
 (defun a51-calculate-indentation ()
+  "Calculate indentation in A51 mode. Assumes point is at the
+first non-whitespace character."
+  (let ((case-fold-search t))
   (or
    (and (looking-at a51-label-regexp) 0)
    (and (looking-at a51-controls-regexp) 0)
-   (indent-next-tab-stop 0)))
+   (and (looking-at a51-directives-regexp) 0)
+   (and (looking-at ";;") 0)
+   (indent-next-tab-stop 0))))
 
 (provide 'a51-mode)
 ;;; a51-mode.el ends here

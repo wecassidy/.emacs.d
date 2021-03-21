@@ -160,7 +160,7 @@ instruction column, add a newline."
       ;; Move to the instruction column, inserting a newline if needed.
       (if (>= (current-column) a51-instruction-column)
           (newline-and-indent)
-        (skip-chars-forward "[:blank:]")
+        (delete-horizontal-space)
         (tab-to-tab-stop)))))
 
 (provide 'a51-mode)

@@ -123,28 +123,13 @@ asm-mode, but hopefully faster."
 (defun a51-indent-line ()
   "Auto-indent the current line using A51 semantics."
   (interactive)
-  (let* ((savep (point))
-        (indent (condition-case nil
-                    (save-excursion
-                      (beginning-of-line)
-                      (skip-chars-forward "[:blank:]")
-                      (if (>= (point) savep) (setq savep nil))
-                      (max (a51-calculate-indentation) 0))
-                  (error 0))))
-    (if savep
-        (save-excursion (indent-line-to indent))
-      (indent-line-to indent))))
-
-(defun a51-calculate-indentation ()
-  "Calculate indentation in A51 mode. Assumes point is on the
-first non-blank character."
-  (let ((case-fold-search t))
-    (or
-     (and (looking-at a51-label-regexp) 0)
-     (and (looking-at a51-controls-regexp) 0)
-     (and (a51-directive-line-p) 0)
-     (and (looking-at ";;") 0)
-     (indent-next-tab-stop 0))))
+  (let ((blankp (save-excursion
+                 (beginning-of-line)
+                 (skip-chars-forward "[:blank:]")
+                 (eq (point) (line-end-position)))))
+    (if blankp
+        (indent-line-to a51-instruction-column)
+      (a51-align-line))))
 
 (defun a51-align-dwim ()
   "Align labels, instructions, and comments to the appropriate
@@ -163,7 +148,7 @@ details."
   (interactive "r")
   (save-excursion
     (goto-char start)
-    (while (<= (point) end)
+    (while (< (point) end)
       (a51-align-line)
       (forward-line)
       (beginning-of-line))))
@@ -196,17 +181,17 @@ columns."
              (when (looking-at a51-label-regexp)
                (indent-line-to 0)
                (skip-chars-forward "^:")
-               (forward-char)
-               (when (> (current-column) a51-instruction-column) (newline-and-indent)))
+               (forward-char))
              (skip-chars-forward "[:blank:]")
 
              (when (looking-at a51-mnemonics-regexp)
                (delete-horizontal-space)
+               (when (> (current-column) a51-instruction-column) (newline))
                (tab-to-column a51-instruction-column))
 
              (let ((this-line-end (line-end-position)))
                (while (< (point) this-line-end)
-                 (skip-syntax-forward "^<")
+                 (skip-syntax-forward "^<" this-line-end)
                  (when (at-comment-start-p)
                    (tab-to-column comment-column)
                    (end-of-line))

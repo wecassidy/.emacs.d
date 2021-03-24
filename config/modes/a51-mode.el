@@ -167,7 +167,6 @@ columns."
   (save-excursion
     (let ((case-fold-search t))
       (beginning-of-line)
-      (skip-chars-forward "[:blank:]")
       (cond ((looking-at ";;;") (indent-line-to 0))
             ((looking-at ";;") (indent-line-to a51-instruction-column))
             ((looking-at ";") (indent-line-to comment-column))
@@ -175,9 +174,10 @@ columns."
             ((or (looking-at a51-controls-regexp) (a51-directive-line-p))
              (indent-line-to 0)
              (skip-syntax-forward "^<" (line-end-position))
-             (when (at-comment-start-p) (tab-to-column comment-column)))
+             (when (comment-start-p) (indent-to comment-column)))
 
             (t
+             (skip-chars-forward "[:blank:]")
              (when (looking-at a51-label-regexp)
                (indent-line-to 0)
                (skip-chars-forward "^:")
@@ -187,22 +187,17 @@ columns."
              (when (looking-at a51-mnemonics-regexp)
                (delete-horizontal-space)
                (when (> (current-column) a51-instruction-column) (newline))
-               (tab-to-column a51-instruction-column))
+               (indent-to a51-instruction-column))
 
              (let ((this-line-end (line-end-position)))
                (while (< (point) this-line-end)
                  (skip-syntax-forward "^<" this-line-end)
-                 (when (at-comment-start-p)
-                   (tab-to-column comment-column)
+                 (when (comment-start-p)
+                   (indent-to comment-column)
                    (end-of-line))
                  (forward-char))))))))
 
-(defun tab-to-column (col)
-  "Insert enough space to place point at `col'. If point is
-already beyond `col', do nothing."
-  (when (< (current-column) col) (insert-char ?\s (- col (current-column)))))
-
-(defun at-comment-start-p ()
+(defun comment-start-p ()
   "Return t if point is at a comment start character."
   (and (eq 11 (syntax-class (syntax-after (point))))
        (save-excursion (forward-char) (in-comment-p))))

@@ -8,11 +8,11 @@
   :group 'languages)
 
 (defcustom a51-mode-hook nil
-  "Normal hook run when entering A51 mode"
+  "Normal hook run when entering A51 mode."
   :type 'hook
   :group 'a51)
 
-(defcustom a51-instruction-column 8
+(defcustom a51-instruction-column 16
   "Column for instructions."
   :type '(integer)
   :group 'a51)
@@ -24,7 +24,7 @@
     "lit" "db" "dw" "dd" "dbit" "ds" "dsb" "dsw" "dsd"
     "proc" "endp" "label" "public" "extrn" "extern" "name"
     "org" "even" "using" "end")
-  "A51 assembler directives"
+  "List of A51 assembler directives."
   :type '(repeat regexp)
   :group 'a51)
 
@@ -100,9 +100,9 @@ asm-mode, but hopefully faster."
   (use-local-map (nconc (make-sparse-keymap) a51-mode-map))
 
   (setq-local font-lock-defaults a51-font-lock-defaults)
+  ;; Comments
   (setq-local comment-start ";")
   (setq-local comment-end "")
-  ;; Comments
   (modify-syntax-entry ?\; "< b" a51-mode-syntax-table)
   (modify-syntax-entry ?\n "> b" a51-mode-syntax-table)
 
@@ -110,7 +110,8 @@ asm-mode, but hopefully faster."
   (modify-syntax-entry ?\' "\"" a51-mode-syntax-table)
   (modify-syntax-entry ?\" "w" a51-mode-syntax-table)
 
-  (modify-syntax-entry ?$ "'" a51-mode-syntax-table) ; assembler controls
+  (modify-syntax-entry ?$ "'" a51-mode-syntax-table) ; Assembler controls
+  (modify-syntax-entry ?? "_" a51-mode-syntax-table) ; Symbols can contain ?
   )
 
 
@@ -130,15 +131,68 @@ asm-mode, but hopefully faster."
       (indent-line-to indent))))
 
 (defun a51-calculate-indentation ()
-  "Calculate indentation in A51 mode. Assumes point is at the
-first non-whitespace character."
+  "Calculate indentation in A51 mode. Assumes point is on the
+first non-blank character."
   (let ((case-fold-search t))
-  (or
-   (and (looking-at a51-label-regexp) 0)
-   (and (looking-at a51-controls-regexp) 0)
-   (and (a51-directive-line-p) 0)
-   (and (looking-at ";;") 0)
-   (indent-next-tab-stop 0))))
+    (or
+     (and (looking-at a51-label-regexp) 0)
+     (and (looking-at a51-controls-regexp) 0)
+     (and (a51-directive-line-p) 0)
+     (and (looking-at ";;") 0)
+     (indent-next-tab-stop 0))))
+
+(defun a51-align-line ()
+  "Align labels, instructions, and comments to the appropriate
+columns."
+  (interactive)
+  (save-excursion
+    (let ((case-fold-search t)
+          (eol (progn (end-of-line) (point))))
+      (beginning-of-line)
+      (cond ((looking-at ";;;") (indent-line-to 0))
+            ((looking-at ";;") (indent-line-to a51-instruction-column))
+            ((looking-at ";") (indent-line-to comment-column))
+
+            ((or (looking-at a51-controls-regexp) (a51-directive-line-p))
+             (indent-line-to 0)
+             (skip-syntax-forward "^<" eol)
+             (when (at-comment-start-p) (tab-to-column comment-column)))
+
+            (t
+             (when (looking-at a51-label-regexp)
+               (indent-line-to 0)
+               (skip-chars-forward "^:")
+               (forward-char)
+               (when (> (current-column) a51-instruction-column) (newline-and-indent)))
+             (skip-chars-forward "[:blank:]")
+
+             (when (looking-at a51-mnemonics-regexp)
+               (delete-horizontal-space)
+               (tab-to-column a51-instruction-column))
+             (skip-syntax-forward "^<" eol)
+             (when (at-comment-start-p) (tab-to-column comment-column)))))))
+
+(defun tab-to-column (col)
+  "Insert enough space to place point at `col'. If point is
+already beyond `col', do nothing."
+  (when (< (current-column) col) (insert-char ?\s (- col (current-column)))))
+
+(defun at-comment-start-p ()
+  "Return t if point is at a comment start character."
+  (eq 11 (syntax-class (syntax-after (point)))))
+
+(defun a51-directive-line-p ()
+  "Check if the current line is an assembler directive. If so,
+return point where the directive was found. Else return nil."
+  (let ((eol (progn (end-of-line) (point))))
+    (beginning-of-line)
+    (and
+     (re-search-forward a51-directives-regexp eol t)
+     (if (not (in-comment-p)) (point) nil))))
+
+(defun in-comment-p ()
+  "Return non-nil if point is in a comment."
+  (nth 4 (syntax-ppss)))
 
 (defun a51-colon ()
   "Move labels to the left margin and move point to
@@ -162,16 +216,6 @@ instruction column, add a newline."
           (newline-and-indent)
         (delete-horizontal-space)
         (tab-to-tab-stop)))))
-
-(defun a51-directive-line-p ()
-  (save-excursion
-    (beginning-of-line)
-    (search-forward-regexp a51-directives-regexp)
-    (not (in-comment-p))))
-
-(defun in-comment-p ()
-  "Return non-nil if point is in a comment."
-  (nth 4 (syntax-ppss)))
 
 (provide 'a51-mode)
 ;;; a51-mode.el ends here

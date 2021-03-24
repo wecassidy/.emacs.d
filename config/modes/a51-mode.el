@@ -70,9 +70,9 @@
   :type '(regexp)
   :group 'a51)
 
-(defvar a51-directives-regexp (regexp-opt a51-directives-list 'words))
-(defvar a51-mnemonics-regexp (regexp-opt a51-mnemonics-list 'words))
-(defvar a51-registers-regexp (regexp-opt a51-registers-list 'words))
+(defvar a51-directives-regexp (regexp-opt a51-directives-list 'symbols))
+(defvar a51-mnemonics-regexp (regexp-opt a51-mnemonics-list 'symbols))
+(defvar a51-registers-regexp (regexp-opt a51-registers-list 'symbols))
 
 (defvar a51-font-lock-defaults
   `(((,a51-label-regexp 1 font-lock-type-face)

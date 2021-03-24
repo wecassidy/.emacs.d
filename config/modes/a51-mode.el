@@ -87,6 +87,7 @@
 (defvar a51-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map ":" 'a51-colon)
+    (define-key map ";" 'a51-semicolon)
     (define-key map (kbd "C-c C-a C-a") 'a51-align-dwim)
     (define-key map (kbd "C-c C-a C-r") 'a51-align-region)
     (define-key map (kbd "C-c C-a C-l") 'a51-align-line)
@@ -232,6 +233,15 @@ return point where the directive was found. Else return nil."
 (defun in-comment-p ()
   "Return non-nil if point is in a comment."
   (nth 4 (syntax-ppss)))
+
+(defun a51-semicolon ()
+  "When inserting a semicolon, automatically align the line. This
+has the effect that starting a comment by typing consecutive
+semicolons aligns appropriately. See `a51-align-line' for
+alignment details."
+  (interactive)
+  (call-interactively 'self-insert-command)
+  (a51-align-line))
 
 (defun a51-colon ()
   "Move labels to the left margin and move point to

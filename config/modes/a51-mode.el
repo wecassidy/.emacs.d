@@ -12,7 +12,7 @@
   :type 'hook
   :group 'a51)
 
-(defcustom a51-instruction-column 16
+(defcustom a51-instruction-column 12
   "Column for instructions."
   :type '(integer)
   :group 'a51)
@@ -87,6 +87,10 @@
 (defvar a51-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map ":" 'a51-colon)
+    (define-key map (kbd "C-c C-a C-a") 'a51-align-dwim)
+    (define-key map (kbd "C-c C-a C-r") 'a51-align-region)
+    (define-key map (kbd "C-c C-a C-l") 'a51-align-line)
+    (define-key map (kbd "C-c C-a C-b") 'a51-align-buffer)
     map)
   "Keymap for a51-mode.")
 
@@ -141,13 +145,41 @@ first non-blank character."
      (and (looking-at ";;") 0)
      (indent-next-tab-stop 0))))
 
+(defun a51-align-dwim ()
+  "Align labels, instructions, and comments to the appropriate
+columns. Align all lines in region if it is active, otherwise
+align the current line. See `a51-align-line' for details."
+  (interactive)
+  (save-excursion
+    (if (use-region-p)
+        (a51-align-region (region-beginning) (region-end))
+      (a51-align-line))))
+
+(defun a51-align-region (start end)
+  "Align labels, instructions, and comments to the appropriate
+columns for every line in the region. See `a51-align-line' for
+details."
+  (interactive "r")
+  (save-excursion
+    (goto-char start)
+    (while (<= (point) end)
+      (a51-align-line)
+      (forward-line)
+      (beginning-of-line))))
+
+(defun a51-align-buffer ()
+  "Align labels, instructions, and comments to the appropriate
+columns for every line in the buffer. See `a51-align-line' for
+details."
+  (interactive)
+  (a51-align-region (point-min) (point-max)))
+
 (defun a51-align-line ()
   "Align labels, instructions, and comments to the appropriate
 columns."
   (interactive)
   (save-excursion
-    (let ((case-fold-search t)
-          (eol (progn (end-of-line) (point))))
+    (let ((case-fold-search t))
       (beginning-of-line)
       (cond ((looking-at ";;;") (indent-line-to 0))
             ((looking-at ";;") (indent-line-to a51-instruction-column))
@@ -155,7 +187,7 @@ columns."
 
             ((or (looking-at a51-controls-regexp) (a51-directive-line-p))
              (indent-line-to 0)
-             (skip-syntax-forward "^<" eol)
+             (skip-syntax-forward "^<" (line-end-position))
              (when (at-comment-start-p) (tab-to-column comment-column)))
 
             (t
@@ -169,7 +201,7 @@ columns."
              (when (looking-at a51-mnemonics-regexp)
                (delete-horizontal-space)
                (tab-to-column a51-instruction-column))
-             (skip-syntax-forward "^<" eol)
+             (skip-syntax-forward "^<" (line-end-position))
              (when (at-comment-start-p) (tab-to-column comment-column)))))))
 
 (defun tab-to-column (col)
@@ -184,11 +216,10 @@ already beyond `col', do nothing."
 (defun a51-directive-line-p ()
   "Check if the current line is an assembler directive. If so,
 return point where the directive was found. Else return nil."
-  (let ((eol (progn (end-of-line) (point))))
-    (beginning-of-line)
-    (and
-     (re-search-forward a51-directives-regexp eol t)
-     (if (not (in-comment-p)) (point) nil))))
+  (beginning-of-line)
+  (and
+   (re-search-forward a51-directives-regexp (line-end-position) t)
+   (if (not (in-comment-p)) (point) nil)))
 
 (defun in-comment-p ()
   "Return non-nil if point is in a comment."

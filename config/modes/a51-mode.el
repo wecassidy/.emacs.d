@@ -181,6 +181,7 @@ columns."
   (save-excursion
     (let ((case-fold-search t))
       (beginning-of-line)
+      (skip-chars-forward "[:blank:]")
       (cond ((looking-at ";;;") (indent-line-to 0))
             ((looking-at ";;") (indent-line-to a51-instruction-column))
             ((looking-at ";") (indent-line-to comment-column))
@@ -201,8 +202,14 @@ columns."
              (when (looking-at a51-mnemonics-regexp)
                (delete-horizontal-space)
                (tab-to-column a51-instruction-column))
-             (skip-syntax-forward "^<" (line-end-position))
-             (when (at-comment-start-p) (tab-to-column comment-column)))))))
+
+             (let ((this-line-end (line-end-position)))
+               (while (< (point) this-line-end)
+                 (skip-syntax-forward "^<")
+                 (when (at-comment-start-p)
+                   (tab-to-column comment-column)
+                   (end-of-line))
+                 (forward-char))))))))
 
 (defun tab-to-column (col)
   "Insert enough space to place point at `col'. If point is
@@ -211,7 +218,8 @@ already beyond `col', do nothing."
 
 (defun at-comment-start-p ()
   "Return t if point is at a comment start character."
-  (eq 11 (syntax-class (syntax-after (point)))))
+  (and (eq 11 (syntax-class (syntax-after (point))))
+       (save-excursion (forward-char) (in-comment-p))))
 
 (defun a51-directive-line-p ()
   "Check if the current line is an assembler directive. If so,

@@ -65,8 +65,14 @@
   "8051 registers - reserved."
   :type '(repeat string)
   :group 'a51)
-(defcustom a51-label-regexp "\\(^[[:blank:]]*[a-zA-Z_?][a-z-A-Z0-9_?]*[[:blank:]]*\\):"
+(defcustom a51-label-regexp "^[[:blank:]]*\\([a-z_?][a-z0-9_?]*\\)\\(%M\\)?\\([a-z0-9_?]*\\)[[:blank:]]*:"
   "Regular expression to match labels."
+  :type '(regexp)
+  :group 'a51)
+
+(defcustom a51-macro-substitution-regexp "%\\(M\\|[[:digit:]]+\\)"
+  "Regular expression to match macro substitution locations: %M
+in a label or %number for a macro argument."
   :type '(regexp)
   :group 'a51)
 
@@ -76,10 +82,13 @@
 
 (defvar a51-font-lock-defaults
   `(((,a51-label-regexp 1 font-lock-type-face)
+     (,a51-label-regexp 2 font-lock-preprocessor-face nil t)
+     (,a51-label-regexp 3 font-lock-type-face nil t)
      (,a51-controls-regexp . font-lock-function-name-face)
      (,a51-directives-regexp . font-lock-keyword-face)
      (,a51-mnemonics-regexp . font-lock-builtin-face)
-     (,a51-registers-regexp . font-lock-constant-face))
+     (,a51-registers-regexp . font-lock-constant-face)
+     (,a51-macro-substitution-regexp . font-lock-preprocessor-face))
     nil
     t)
   "Syntax highlighting settings for A51.")
@@ -177,7 +186,6 @@ columns."
              (when (comment-start-p) (indent-to comment-column)))
 
             (t
-             (skip-chars-forward "[:blank:]")
              (when (looking-at a51-label-regexp)
                (indent-line-to 0)
                (skip-chars-forward "^:")

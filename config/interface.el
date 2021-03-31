@@ -161,5 +161,7 @@ transpositions to execute in sequence."
             (info-colors-fontify-node)
             (display-line-numbers-mode nil)))
 
+(which-key-mode)
+
 (provide 'interface)
 ;;; interface.el ends here

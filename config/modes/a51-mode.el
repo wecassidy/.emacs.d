@@ -23,7 +23,7 @@
     "equ" "set" "bit" "code" "data" "idata" "xdata"
     "lit" "db" "dw" "dd" "dbit" "ds" "dsb" "dsw" "dsd"
     "proc" "endp" "label" "public" "extrn" "extern" "name"
-    "org" "even" "using" "end")
+    "org" "even" "using" "end" "mac" "endmac")
   "List of A51 assembler directives."
   :type '(repeat regexp)
   :group 'a51)
@@ -167,9 +167,9 @@ columns."
   (save-excursion
     (let ((case-fold-search t))
       (beginning-of-line)
-      (cond ((looking-at ";;;") (indent-line-to 0))
-            ((looking-at ";;") (indent-line-to a51-instruction-column))
-            ((looking-at ";") (indent-line-to comment-column))
+      (cond ((looking-at "[[:blank:]]*;;;") (indent-line-to 0))
+            ((looking-at "[[:blank:]]*;;") (indent-line-to a51-instruction-column))
+            ((looking-at "[[:blank:]]*;") (indent-line-to comment-column))
 
             ((or (looking-at a51-controls-regexp) (a51-directive-line-p))
              (indent-line-to 0)

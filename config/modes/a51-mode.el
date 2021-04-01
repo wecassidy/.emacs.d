@@ -3,6 +3,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(require 'a51-toc)
+
 (defgroup a51 nil
   "Mode for editing A51 assembler for the 8051 processor."
   :group 'languages)

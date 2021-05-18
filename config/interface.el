@@ -109,12 +109,18 @@ transpositions to execute in sequence."
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command) ; Old M-x
 
 ;; Automatically sudo - based on http://emacsredux.com/blog/2013/04/21/edit-files-as-root/
-(defadvice ido-find-file (after find-file-sudo activate)
-  "Find file as root if necessary."
-  (unless (and buffer-file-name
-               (file-writable-p buffer-file-name)
-               (not (string-prefix-p "/ssh:" buffer-file-name))) ; Don't tramp when SSHing
+(defun er-sudo-edit (&optional arg)
+  "Edit currently visited file as root.
+
+With a prefix ARG prompt for a file to visit.
+Will also prompt for a file to visit if current
+buffer is not visiting a file."
+  (interactive "P")
+  (if (or arg (not buffer-file-name))
+      (find-file (concat "/sudo:root@localhost:"
+                         (ido-read-file-name "Find file(as root): ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+(global-set-key (kbd "C-x C-r") #'er-sudo-edit)
 
 ;; Auto-insert text
 (add-hook 'find-file-hook 'auto-insert)

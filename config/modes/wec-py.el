@@ -4,23 +4,20 @@
 ;;
 
 ;;; Code:
-(require 'python)
 
 ;; Use IPython 3
 (setq python-shell-interpreter "~/.local/bin/ipython3"
       python-shell-interpreter-args "--simple-prompt -i")
 
 ;; Docstring minor mode
-(require 'python-docstring)
 (add-hook 'python-mode-hook 'python-docstring-mode)
 (setq python-docstring-sentence-end-double-space nil)
 
 ;; Autocomplete
-(require 'company)
+;(require 'company)
 (add-hook 'python-mode-hook (lambda () (add-to-list 'company-backends 'company-jedi)))
 
 ;; Execute Pylint with Python 3
-(require 'flycheck-pycheckers)
 (with-eval-after-load 'flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)
   (setq flycheck-pycheckers-checkers '(pylint)))

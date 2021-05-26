@@ -5,14 +5,12 @@
 ;; company-mode.  See modes/*.el for which modes load which backends.
 
 ;;; Code:
-(require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook 'company-statistics-mode) ; list more commonly used completions first
 
 (global-set-key (kbd "C-<tab>") 'company-manual-begin) ; complete on C-tab
 
 ;; Show help in auto-complete
-(require 'company-quickhelp)
 (eval-after-load 'company
   '(define-key company-active-map (kbd "C-c h") #'company-quickhelp-manual-begin)) ; show help when companying with C-c h
 (setq company-quickhelp-use-propertized-text t)

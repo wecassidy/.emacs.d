@@ -4,7 +4,6 @@
 ;; web-mode, mostly, with a hint of jinja
 
 ;;; Code:
-(require 'web-mode)
 (defun web-mode-custom-hook ()
   "Hooks for Web mode."
 

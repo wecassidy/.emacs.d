@@ -50,7 +50,6 @@ defined in `display-line-numbers-exempt-modes'"
 
 
 ;;; ido makes finding stuff better
-(require 'ido)
 (ido-mode 1)
 (setq ido-case-fold t)
 
@@ -75,22 +74,17 @@ transpositions to execute in sequence."
 (global-set-key (kbd "C-x 4 t") #'crux-transpose-windows)
 
 ;; Flexible matching in ido
-(require 'flx-ido)
 (flx-ido-mode 1)
-;; disable ido faces to see flx highlights.
-(setq ido-enable-flex-matching t)
+(setq ido-enable-flex-matching t) ; disable ido faces to see flx highlights.
 
 ;; Use a vertical list instead
-(require 'ido-vertical-mode)
 (ido-vertical-mode 1)
 (setq ido-vertical-define-keys 'C-n-and-C-p-only)
 
 ;; ido everywhere (see also modes/wec-git.el, which enables ido in magit)
 (ido-everywhere 1)
-(require 'ido-completing-read+)
 (ido-ubiquitous-mode 1)
 ;; smex: ido for M-x
-(require 'smex)
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
@@ -111,7 +105,6 @@ buffer is not visiting a file."
 (global-set-key (kbd "C-x C-r") #'er-sudo-edit)
 
 ;; ibuffer: buffer list, but way more awesome
-(require 'ibuffer)
 (setq ibuffer-expert t)
 (setq ibuffer-show-empty-filter-groups nil)
 
@@ -119,7 +112,6 @@ buffer is not visiting a file."
 	  '(lambda ()
 	     (ibuffer-auto-mode 1))) ; Keep ibuffer up to date
 
-(require 'info-colors)
 (add-hook 'Info-selection-hook
           (lambda ()
             (variable-pitch-mode)
@@ -128,7 +120,6 @@ buffer is not visiting a file."
 
 (which-key-mode)
 
-(require 'dired)
 (setq dired-listing-switches "-lAhF --group-directories-first")
 
 (provide 'interface)

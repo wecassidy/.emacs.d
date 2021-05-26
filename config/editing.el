@@ -8,7 +8,6 @@
 (setq auto-save-default t)
 
 ;; Spellchecking
-(require 'ispell)
 (setq-default ispell-program-name "/usr/bin/aspell")
 (setq ispell-dictionary "en_CA")
 
@@ -27,20 +26,7 @@ line."
 
 (global-set-key (kbd "C-a") 'move-beginning-of-line-dwim)
 
-;; Increment and decrement numbers
-(require 'shift-number)
-(global-set-key (kbd "C-c C-+") 'shift-number-up)
-(global-set-key (kbd "C-c C--") 'shift-number-down)
-
-;; Insert the date at point
-(defun wec-insert-date ()
-  "Insert the current date in ISO 8601 (i.e. yyyy-mm-dd) format."
-  (interactive)
-  (insert (format-time-string "%Y-%m-%d")))
-(global-set-key (kbd "C-c d") 'wec-insert-date)
-
 ;; Better regexes
-(require 'visual-regexp-steroids)
 (define-key global-map (kbd "C-c r") 'vr/replace)
 (define-key global-map (kbd "C-c q") 'vr/query-replace)
 ;; to use visual-regexp-steroids's isearch instead of the built-in regexp isearch, also include the following lines:
@@ -71,7 +57,6 @@ becomes
 (global-set-key (kbd "RET") 'wec-return-in-pair)
 
 ;; undo-tree
-(require 'undo-tree)
 (global-undo-tree-mode)
 
 ;; Line wrapping

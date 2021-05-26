@@ -60,7 +60,6 @@
   :config
   (add-to-list 'ebib-file-associations '("pdf" . "evince")))
 
-(require 'reftex)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
 

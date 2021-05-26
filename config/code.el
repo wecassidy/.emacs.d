@@ -8,7 +8,6 @@
 (setq-default indent-tabs-mode nil)
 (setq c-basic-offset 2)
 
-(require 'highlight-indent-guides)
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 (setq highlight-indent-guides-method 'character)
 (setq highlight-indent-guides-character ?\|)
@@ -24,7 +23,6 @@
 
 ;;; Parentheses and other pairs
 ;; Auto-insert pairs
-(require 'smartparens-config)
 (smartparens-global-mode)
 (show-smartparens-global-mode)
 (setq sp-show-pair-from-inside t)
@@ -32,7 +30,6 @@
 (electric-indent-mode)
 
 ;; Code linting
-(require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (eval-after-load "flycheck"
   '(add-hook 'flycheck-mode-hook 'flycheck-status-emoji-mode))
@@ -57,23 +54,16 @@
             (csv-align-fields nil (point-min) (point-max))
             (csv-header-line)))
 
-(setq inferior-lisp-program "/usr/bin/sbcl")
-(require 'slime-autoloads)
-(setq slime-contribs '(slime-fancy))
-
 ;; Keyboard shortcut to launch a terminal
 (global-set-key (kbd "C-c C-t") 'ansi-term)
-
 (setq sh-basic-offset 2)
 (setq sh-indentation 2)
 
-(require 'rust-mode)
 (add-hook 'rust-mode-hook
           (lambda ()
             (setq indent-tabs-mode nil)
-            (setq rust-format-on-save t)))
-
-(define-key rust-mode-map (kbd "C-c C-c") 'rust-run)
+            (setq rust-format-on-save t)
+            (define-key rust-mode-map (kbd "C-c C-c") 'rust-run)))
 
 ;; R: remaps C-up and C-down to match input in history in inferior ESS
 ;; buffers. Remaps C-x t to complete a filename in inferior ESS
@@ -93,8 +83,6 @@
   :config
   (setq git-commit-major-mode 'org-mode)
   (setq magit-completing-read-function 'magit-ido-completing-read))
-
-(require 'org)
 
 ;; Display symbols (e. g. \alpha) as unicode
 (setq org-pretty-entities t)

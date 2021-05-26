@@ -46,17 +46,6 @@
     (face-remap-add-relative face nil
                         :inherit 'fixed-pitch)))
 
-;; Starting/opening LaTeX files
-(defun make-latex (parent-dir name)
-  "Make a new LaTeX project. `parent-dir' is the parent directory,
-`name' is the name of the LaTeX"
-  (interactive "DLocation:\nMName:")
-  (let ((dir (expand-file-name name parent-dir))
-        (latex-file (concat name ".tex")))
-    (make-directory dir)
-    (magit-init dir)
-    (find-file (expand-file-name latex-file dir))))
-
 ;; Citations: ebib, BibLaTeX, and RefTeX
 (use-package ebib
   :bind (("C-c e" . ebib))

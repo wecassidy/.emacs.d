@@ -1,8 +1,7 @@
 ;;; code.el --- settings for programming
 
 ;;; Commentary:
-;; Settings common to all languages.  yasnippet, indentation, linting,
-;; etc.
+;; Settings common to all languages.  Indentation, linting, etc.
 
 ;;; Code:
 ;; Indentation
@@ -23,78 +22,14 @@
 
 (require 'wec-auto-complete)
 
-;; Yasnippet
-(use-package yasnippet
-  :defer 1
-  :init
-  (setq yas-prompt-functions '(yas-ido-prompt yas-x-prompt))
-  :config
-  (yas-global-mode))
-
 ;;; Parentheses and other pairs
 ;; Auto-insert pairs
-(use-package smartparens-config
-  :ensure smartparens
-  :config (show-smartparens-global-mode t)
-  (use-package smartparens-mode
-    :hook (prog-mode text-mode)))
+(require 'smartparens-config)
+(smartparens-global-mode)
+(show-smartparens-global-mode)
+(setq sp-show-pair-from-inside t)
 
 (electric-indent-mode)
-
-;; Highlight matching parentheses
-(require 'paren)
-(show-paren-mode)
-(setq show-paren-delay 0)
-(setq show-paren-when-point-in-periphery t)
-(setq show-paren-when-point-inside-paren t)
-
-;; Also highlight quotes - from https://emacs.stackexchange.com/a/43687/14703
-(defun show-paren--match-quotes ()
-  "Find the opening and closing quote marks of a string for
-`show-paren-mode'."
-  (let ((ppss (syntax-ppss)))
-    ;; In order to distinguish which quote is opening and which is starting,
-    ;; check that that point is not within a string (or comment, for that
-    ;; matter).  Also ignore escaped quotes.
-    (unless (or (nth 8 ppss) (nth 5 ppss))
-      (or
-       (and (not (bobp))
-            (eq 7 (car-safe (syntax-after (1- (point)))))
-            (save-excursion
-              (let ((end (point))
-                    (ppss (syntax-ppss (1- (point)))))
-                (when (nth 3 ppss)
-                  (let ((beg (nth 8 ppss)))
-                    (list beg
-                          (1+ beg)
-                          (1- end)
-                          end))))))
-       (and (not (eobp))
-            (eq 7 (car-safe (syntax-after (point))))
-            (save-excursion
-              (let ((beg (point)))
-                (condition-case nil
-                    (progn
-                      (forward-sexp 1)
-                      (list beg
-                            (1+ beg)
-                            (1- (point))
-                            (point)))))))))))
-
-(advice-add 'show-paren--default :after-until #'show-paren--match-quotes)
-
-;; Parenthesis matching face
-(require 'color-theme-sanityinc-solarized)
-(color-theme-sanityinc-solarized--with-colors
- 'dark
- (set-face-attribute 'show-paren-match nil
-                     :foreground blue
-                     :inverse-video nil
-                     :underline t)
- (set-face-attribute 'show-paren-mismatch nil
-                     :foreground red
-                     :background base03
-                     :inverse-video t))
 
 ;; Code linting
 (require 'flycheck)
@@ -108,16 +43,67 @@
                             (subword-mode) ; M-f/M-b through camelCase correctly
                             (flyspell-prog-mode))) ; Spellcheck for coding
 
-;; Projectile
-(use-package projectile
-  :ensure t
-  :config
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (projectile-mode +1))
-
-;; VHDL
 (add-hook 'vhdl-mode-hook (lambda () (vhdl-electric-mode)))
+
+;; `arduino-mode' doesn't inherit from `prog-mode', so buffer-local
+;; modes have to be added on their own
+(add-hook 'arduino-mode-hook (lambda ()
+                            (subword-mode)
+                            (flyspell-prog-mode)
+                            (auto-complete-mode)))
+
+(add-hook 'csv-mode-hook
+          (lambda ()
+            (csv-align-fields nil (point-min) (point-max))
+            (csv-header-line)))
+
+(setq inferior-lisp-program "/usr/bin/sbcl")
+(require 'slime-autoloads)
+(setq slime-contribs '(slime-fancy))
+
+;; Keyboard shortcut to launch a terminal
+(global-set-key (kbd "C-c C-t") 'ansi-term)
+
+(setq sh-basic-offset 2)
+(setq sh-indentation 2)
+
+(require 'rust-mode)
+(add-hook 'rust-mode-hook
+          (lambda ()
+            (setq indent-tabs-mode nil)
+            (setq rust-format-on-save t)))
+
+(define-key rust-mode-map (kbd "C-c C-c") 'rust-run)
+
+;; R: remaps C-up and C-down to match input in history in inferior ESS
+;; buffers. Remaps C-x t to complete a filename in inferior ESS
+;; buffers.
+(add-hook 'inferior-ess-mode-hook
+          '(lambda nil
+             (define-key inferior-ess-mode-map [\C-up]
+               'comint-previous-matching-input-from-input)
+             (define-key inferior-ess-mode-map [\C-down]
+               'comint-next-matching-input-from-input)
+             (define-key inferior-ess-mode-map [\C-x \t]
+               'comint-dynamic-complete-filename)))
+
+(use-package magit
+  :defer t
+  :bind (("C-x g" . 'magit-status))
+  :config
+  (setq git-commit-major-mode 'org-mode)
+  (setq magit-completing-read-function 'magit-ido-completing-read))
+
+(require 'org)
+
+;; Display symbols (e. g. \alpha) as unicode
+(setq org-pretty-entities t)
+
+;; Bug tracking keywords
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "|" "DONE(d)")
+        (sequence "BUG(b)" "WORKING(w)" "|" "FIXED(f)")))
+(setq org-use-fast-todo-selection 'prefix) ; Use a prefix argument to select todo keywords by single-letter
 
 (provide 'code)
 ;;; code.el ends here

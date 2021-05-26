@@ -53,6 +53,23 @@ defined in `display-line-numbers-exempt-modes'"
 (ido-mode 1)
 (setq ido-case-fold t)
 
+;; Flexible matching in ido
+(flx-ido-mode 1)
+(setq ido-enable-flex-matching t) ; disable ido faces to see flx highlights.
+
+;; Use a vertical list instead
+(ido-vertical-mode 1)
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+
+;; ido everywhere (see also modes/wec-git.el, which enables ido in magit)
+(ido-everywhere 1)
+(ido-ubiquitous-mode 1)
+;; smex: ido for M-x
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command) ; Old M-x
+
 ;; Lifted from https://github.com/bbatsov/crux
 ;; modified from https://www.emacswiki.org/emacs/TransposeWindows
 ;;;###autoload
@@ -72,23 +89,6 @@ transpositions to execute in sequence."
       (setq arg (if (cl-plusp arg) (1- arg) (1+ arg))))))
 
 (global-set-key (kbd "C-x 4 t") #'crux-transpose-windows)
-
-;; Flexible matching in ido
-(flx-ido-mode 1)
-(setq ido-enable-flex-matching t) ; disable ido faces to see flx highlights.
-
-;; Use a vertical list instead
-(ido-vertical-mode 1)
-(setq ido-vertical-define-keys 'C-n-and-C-p-only)
-
-;; ido everywhere (see also modes/wec-git.el, which enables ido in magit)
-(ido-everywhere 1)
-(ido-ubiquitous-mode 1)
-;; smex: ido for M-x
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command) ; Old M-x
 
 ;; Automatically sudo - based on http://emacsredux.com/blog/2013/04/21/edit-files-as-root/
 (defun er-sudo-edit (&optional arg)

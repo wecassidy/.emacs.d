@@ -47,7 +47,7 @@ defined in `display-line-numbers-exempt-modes'"
     (display-line-numbers-mode)))
 
 (global-display-line-numbers-mode)
-
+(column-number-mode)
 
 ;;; ido makes finding stuff better
 (ido-mode 1)

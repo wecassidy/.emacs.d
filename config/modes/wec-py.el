@@ -12,6 +12,7 @@
 ;; Docstring minor mode
 (add-hook 'python-mode-hook 'python-docstring-mode)
 (setq python-docstring-sentence-end-double-space nil)
+(setq numpydoc-insert-examples-block nil)
 
 ;; Autocomplete
 ;(require 'company)

@@ -89,9 +89,18 @@
 
 ;; Bug tracking keywords
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "|" "DONE(d)")
+      '((sequence "TODO(t)" "IN-PROGRESS(p)" "|" "DONE(d)")
+        (sequence "TO-WRITE(w)" "NOTES(n)" "DRAFT(r)" "|" "DONE(d)")
         (sequence "BUG(b)" "WORKING(w)" "|" "FIXED(f)")))
 (setq org-use-fast-todo-selection 'prefix) ; Use a prefix argument to select todo keywords by single-letter
+(add-hook 'org-mode-hook 'org-indent-mode)
+(org-babel-do-load-languages
+      'org-babel-load-languages
+      '((python . t)))
+(setq org-startup-folded t)
+
+;; Make latex previews bigger
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
 (provide 'code)
 ;;; code.el ends here

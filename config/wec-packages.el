@@ -7,6 +7,7 @@
 (package-initialize)
 
 ;; Use a better package menu
+(require 'use-package)
 (use-package paradox
   :defer 2
   :init

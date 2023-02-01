@@ -15,6 +15,8 @@
 (when (member "Noto Sans" (font-family-list))
   (set-face-attribute 'variable-pitch nil :font "Noto Sans"))
 
+(set-face-attribute 'default nil :height 120)
+
 ;; Use Symbola as a backup when characters aren't found
 (set-fontset-font t nil "Symbola")
 
@@ -24,12 +26,17 @@
       :hook (after-init . doom-modeline-mode))
 
 ;; Scrolling
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 4)))
+;;(setq mouse-wheel-scroll-amount '(1 ((shift) . 4)))
+(good-scroll-mode 1)
 (setq scroll-step 1) ; keyboard scroll one line at a time
 
 ;; Window size
 (setq default-frame-alist '((fullscreen . maximized)))
 (setq-default window-combination-resize t)
+
+;; Don't show the splash screen when launching with a file
+(setq inhibit-startup-screen t)
+(setq initial-buffer-choice nil)
 
 ;; Line/column numbers
 (require 'display-line-numbers)
@@ -89,6 +96,7 @@ transpositions to execute in sequence."
       (setq arg (if (cl-plusp arg) (1- arg) (1+ arg))))))
 
 (global-set-key (kbd "C-x 4 t") #'crux-transpose-windows)
+(windmove-default-keybindings) ; Use shift-arrows to switch between windows
 
 ;; Automatically sudo - based on http://emacsredux.com/blog/2013/04/21/edit-files-as-root/
 (defun er-sudo-edit (&optional arg)

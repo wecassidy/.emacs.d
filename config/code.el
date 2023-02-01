@@ -23,6 +23,7 @@
 
 ;;; Parentheses and other pairs
 ;; Auto-insert pairs
+(require 'smartparens-config)
 (smartparens-global-mode)
 (show-smartparens-global-mode)
 (setq sp-show-pair-from-inside t)

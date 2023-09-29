@@ -10,13 +10,12 @@
       python-shell-interpreter-args "--simple-prompt -i")
 
 ;; Docstring minor mode
-(add-hook 'python-mode-hook 'python-docstring-mode)
-(setq python-docstring-sentence-end-double-space nil)
+;(add-hook 'python-mode-hook 'python-docstring-mode)
+;(setq python-docstring-sentence-end-double-space nil)
 (setq numpydoc-insert-examples-block nil)
 
 ;; Autocomplete
-;(require 'company)
-(add-hook 'python-mode-hook (lambda () (add-to-list 'company-backends 'company-jedi)))
+;; (add-hook 'python-mode-hook (lambda () (add-to-list 'company-backends 'company-jedi)))
 
 ;; Execute Pylint with Python 3
 (with-eval-after-load 'flycheck
@@ -25,12 +24,21 @@
   (setq flycheck-python-pylint-executable "/usr/bin/python3")
 
 ;; Show source code outline tree with C-c x
-(eval-after-load "python"
-  '(define-key python-mode-map "\C-cx" 'jedi-direx:switch-to-buffer))
-(add-hook 'jedi-mode-hook 'jedi-direx:setup)
+;; (eval-after-load "python"
+;;   '(define-key python-mode-map "\C-cx" 'jedi-direx:switch-to-buffer))
+;; (add-hook 'jedi-mode-hook 'jedi-direx:setup)
 
 ;; Automatically blacken code
 (add-hook 'python-mode-hook 'blacken-mode)
+(setq blacken-only-if-project-is-blackened t)
+
+;; Pipenv
+(use-package pipenv
+  :hook (python-mode . pipenv-mode)
+  :init
+  (setq
+   pipenv-projectile-after-switch-function
+   #'pipenv-projectile-after-switch-extended))
 
 (provide 'wec-py)
 ;;; wec-py.el ends here

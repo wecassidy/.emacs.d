@@ -103,5 +103,9 @@
 ;; Make latex previews bigger
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
+;; Projectile
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
 (provide 'code)
 ;;; code.el ends here

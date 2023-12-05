@@ -8,6 +8,9 @@
 
 ;; Use a better package menu
 (require 'use-package)
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
 (use-package paradox
   :defer 2
   :init
@@ -16,9 +19,11 @@
   (paradox-enable))
 
 ;; Automatically update packages on startup
-(setq auto-package-update-interval 1)
-(setq auto-package-update-delete-old-versions t)
-(auto-package-update-maybe)
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 
 (provide 'wec-packages)
 ;;; wec-packages.el ends here

@@ -5,6 +5,7 @@
 
 ;;; Code:
 ;; Theme
+(use-package doom-themes)
 (load-theme 'doom-monokai-classic t)
 
 ;; Basic fonts
@@ -27,7 +28,9 @@
 
 ;; Scrolling
 ;;(setq mouse-wheel-scroll-amount '(1 ((shift) . 4)))
-(good-scroll-mode 1)
+(use-package good-scroll
+  :config
+  (good-scroll-mode 1))
 (setq scroll-step 1) ; keyboard scroll one line at a time
 
 ;; Window size
@@ -61,21 +64,26 @@ defined in `display-line-numbers-exempt-modes'"
 (setq ido-case-fold t)
 
 ;; Flexible matching in ido
-(flx-ido-mode 1)
-(setq ido-enable-flex-matching t) ; disable ido faces to see flx highlights.
+(use-package flx-ido
+  :config
+  (flx-ido-mode 1)
+  (setq ido-enable-flex-matching t)) ; disable ido faces to see flx highlights.
 
 ;; Use a vertical list instead
-(ido-vertical-mode 1)
-(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+(use-package ido-vertical-mode
+  :config
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only))
 
 ;; ido everywhere (see also modes/wec-git.el, which enables ido in magit)
 (ido-everywhere 1)
-(ido-ubiquitous-mode 1)
-;; smex: ido for M-x
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command) ; Old M-x
+(use-package ido-completing-read+
+  :config
+  (ido-ubiquitous-mode 1))
+
+(use-package amx ; ido for M-x
+  :config
+  (amx-mode 1))
 
 ;; Lifted from https://github.com/bbatsov/crux
 ;; modified from https://www.emacswiki.org/emacs/TransposeWindows
@@ -126,7 +134,9 @@ buffer is not visiting a file."
             (info-colors-fontify-node)
             (display-line-numbers-mode nil)))
 
-(which-key-mode)
+(use-package which-key
+  :config
+  (which-key-mode))
 
 (setq dired-listing-switches "-lAhF --group-directories-first")
 

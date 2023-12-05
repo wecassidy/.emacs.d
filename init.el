@@ -18,7 +18,8 @@
 
 ;; Packages
 (require 'wec-packages)
-(require 'better-defaults)
+(use-package better-defaults)
+
 (require 'interface)
 (require 'editing)
 (require 'code)

@@ -2,7 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 ;; TeX
-(use-package latex
+(use-package auctex
   :mode
   ("\\.tex\\'" . latex-mode)
   :init

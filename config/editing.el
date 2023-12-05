@@ -57,13 +57,15 @@ becomes
 (global-set-key (kbd "RET") 'wec-return-in-pair)
 
 ;; undo-tree
-(global-undo-tree-mode)
+;; (use-package undo-tree
+;;   :config
+;;   (global-undo-tree-mode))
 
 ;; Line wrapping
 (add-hook 'text-mode-hook 'turn-on-flyspell)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
-(use-package visual-fill-column-mode
+(use-package visual-fill-column
   :init
   (setq visual-fill-column-width 100)
   (setq visual-fill-column-center-text t)
@@ -72,10 +74,9 @@ becomes
   (visual-line-mode)
   :hook (LaTeX-mode))
 
-(use-package visual-line-mode
-  :init
-  (add-hook 'visual-line-mode-hook 'turn-off-auto-fill)
-  :hook visual-fill-column-mode)
+
+(add-hook 'visual-line-mode-hook 'turn-off-auto-fill)
+(add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
 
 (provide 'editing)
 ;;; editing.el ends here

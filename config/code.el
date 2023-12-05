@@ -8,11 +8,6 @@
 (setq-default indent-tabs-mode nil)
 (setq c-basic-offset 2)
 
-(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-(setq highlight-indent-guides-method 'character)
-(setq highlight-indent-guides-character ?\|)
-(setq highlight-indent-guides-responsive 'top)
-
 ;; Don't softwrap
 (set-default 'truncate-lines t)
 
@@ -23,10 +18,11 @@
 
 ;;; Parentheses and other pairs
 ;; Auto-insert pairs
-(require 'smartparens-config)
-(smartparens-global-mode)
-(show-smartparens-global-mode)
-(setq sp-show-pair-from-inside t)
+(use-package smartparens
+  :config
+  (smartparens-global-mode)
+  (show-smartparens-global-mode)
+  (setq sp-show-pair-from-inside t))
 
 (electric-indent-mode)
 
@@ -103,9 +99,6 @@
 ;; Make latex previews bigger
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
-;; Projectile
-(projectile-mode +1)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (provide 'code)
 ;;; code.el ends here

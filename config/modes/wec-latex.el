@@ -14,10 +14,9 @@
          ("C-c i" . (lambda () (interactive) (TeX-font nil ?\C-e))) ; Italic
          ("C-c s" . (lambda () (interactive) (TeX-font nil ?\C-c))) ; Smallcaps
          ("C-c t" . (lambda () (interactive) (TeX-font nil ?\C-t)))) ; Typewriter
+  :hook (LaTeX-mode . latex-math-mode)
   :config
-  (use-package latex-math-mode
-    :hook LaTeX-mode)
-  (use-package latex-extra-mode
+  (use-package latex-extra
     :hook LaTeX-mode)
   (use-package company-auctex
     :config
@@ -34,7 +33,6 @@
   "Set up fonts for latex editing: turn on variable pitch, set
   some fonts to monospace."
   (variable-pitch-mode t)
-  (prettify-symbols-mode)
   (face-remap-add-relative 'default nil :height 140)
   (face-remap-add-relative 'fixed-pitch nil :height 140)
   (dolist (face '(font-latex-math-face

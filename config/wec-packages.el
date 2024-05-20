@@ -11,13 +11,6 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-(use-package paradox
-  :defer 2
-  :init
-  (setq paradox-execute-asynchronously t)
-  :config
-  (paradox-enable))
-
 ;; Automatically update packages on startup
 (use-package auto-package-update
   :config

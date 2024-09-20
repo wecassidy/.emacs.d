@@ -7,6 +7,7 @@
 ;; Indentation
 (setq-default indent-tabs-mode nil)
 (setq c-basic-offset 2)
+(setq lua-indent-level 2)
 
 ;; Don't softwrap
 (set-default 'truncate-lines t)

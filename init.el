@@ -35,6 +35,7 @@
 (require 'wec-latex)
 (require 'wec-py)
 (require 'wec-web)
+(require 'wec-gem)
 
 (put 'upcase-region 'disabled nil)
 (put 'c-electric-semi&comma 'disabled nil)

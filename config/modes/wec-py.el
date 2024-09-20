@@ -6,7 +6,7 @@
 ;;; Code:
 
 ;; Use IPython 3
-(setq python-shell-interpreter "~/.local/bin/ipython3"
+(setq python-shell-interpreter "ipython"
       python-shell-interpreter-args "--simple-prompt -i")
 
 ;; Docstring minor mode
@@ -18,10 +18,13 @@
 ;; (add-hook 'python-mode-hook (lambda () (add-to-list 'company-backends 'company-jedi)))
 
 ;; Execute Pylint with Python 3
-(with-eval-after-load 'flycheck
-  (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)
-  (setq flycheck-pycheckers-checkers '(pylint)))
-  (setq flycheck-python-pylint-executable "/usr/bin/python3")
+;; (with-eval-after-load 'flycheck
+;;   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)
+;;   (setq flycheck-pycheckers-checkers '(pyflakes pylint)))
+  ;(setq flycheck-python-pylint-executable "/usr/bin/python3")
+(require 'flycheck-pyflakes)
+(add-to-list 'flycheck-disabled-checkers 'python-flake8)
+(add-to-list 'flycheck-disabled-checkers 'python-pylint)
 
 ;; Show source code outline tree with C-c x
 ;; (eval-after-load "python"

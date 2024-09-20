@@ -28,8 +28,6 @@
 
 ;; Code linting
 (add-hook 'after-init-hook #'global-flycheck-mode)
-(eval-after-load "flycheck"
-  '(add-hook 'flycheck-mode-hook 'flycheck-status-emoji-mode))
 (setq flycheck-emacs-lisp-load-path 'inherit)
 
 ;; Buffer-local modes that should always be on

@@ -8,7 +8,8 @@
   :init
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
-  (add-to-list 'display-line-numbers-exempt-modes 'latex-mode)
+    (add-to-list 'display-line-numbers-exempt-modes 'latex-mode)
+;  (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
   (add-hook 'LaTeX-mode-hook #'latex-font-setup)
   :bind (("C-c b" . (lambda () (interactive) (TeX-font nil ?\C-b))) ; Bold
          ("C-c i" . (lambda () (interactive) (TeX-font nil ?\C-e))) ; Italic
@@ -17,6 +18,10 @@
   :hook (LaTeX-mode . latex-math-mode)
   :config
   (use-package latex-extra
+    :hook LaTeX-mode)
+  (put 'TeX-insert-quote 'delete-selection nil)
+  (put 'TeX-insert-dollar 'delete-selection nil)
+  (use-package latex-math-mode
     :hook LaTeX-mode)
   (use-package company-auctex
     :config
@@ -27,7 +32,8 @@
                           (add-to-list 'company-backends 'company-latex-commands))))
   (tex-pdf-mode t)
   (use-package smartparens-latex)
-  (add-hook 'LaTeX-mode-hook #'visual-fill-column-mode))
+  (add-hook 'LaTeX-mode-hook #'visual-fill-column-mode)
+  (add-hook 'LaTeX-mode-hook (lambda () (TeX-fold-mode) (TeX-fold-buffer))))
 
 (defun latex-font-setup ()
   "Set up fonts for latex editing: turn on variable pitch, set
@@ -60,6 +66,7 @@
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
+(setq reftex-ref-style-default-list '("Default" "Hyperref"))
 
 (defvar my-reftex-cite-format-helpstrings
   '((biblatex

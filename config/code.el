@@ -65,7 +65,7 @@
 ;; buffers. Remaps C-x t to complete a filename in inferior ESS
 ;; buffers.
 (add-hook 'inferior-ess-mode-hook
-          '(lambda nil
+          #'(lambda nil
              (define-key inferior-ess-mode-map [\C-up]
                'comint-previous-matching-input-from-input)
              (define-key inferior-ess-mode-map [\C-down]
@@ -98,6 +98,24 @@
 ;; Make latex previews bigger
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
+(add-hook 'rst-mode-hook #'visual-fill-column-mode)
+
+(autoload 'asy-mode "asy-mode.el" "Asymptote major mode." t)
+(autoload 'lasy-mode "asy-mode.el" "hybrid Asymptote/Latex major mode." t)
+(autoload 'asy-insinuate-latex "asy-mode.el" "Asymptote insinuate LaTeX." t)
+(add-to-list 'auto-mode-alist '("\\.asy$" . asy-mode))
+
+(require 'lsp-mode)
+(add-to-list 'lsp-language-id-configuration '(asy-mode . "asymptote"))
+(lsp-register-client
+ (make-lsp-client :new-connection (lsp-stdio-connection '("asy" "-lsp"))
+                  :activation-fn (lsp-activate-on "asymptote")
+                  :major-modes '(asy-mode)
+                  :server-id 'asyls))
+
+;; Projectile
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (provide 'code)
 ;;; code.el ends here

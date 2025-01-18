@@ -125,7 +125,7 @@ buffer is not visiting a file."
 (setq ibuffer-show-empty-filter-groups nil)
 
 (add-hook 'ibuffer-mode-hook
-	  '(lambda ()
+	  #'(lambda ()
 	     (ibuffer-auto-mode 1))) ; Keep ibuffer up to date
 
 (add-hook 'Info-selection-hook

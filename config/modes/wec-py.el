@@ -22,7 +22,8 @@
 ;;   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)
 ;;   (setq flycheck-pycheckers-checkers '(pyflakes pylint)))
   ;(setq flycheck-python-pylint-executable "/usr/bin/python3")
-(require 'flycheck-pyflakes)
+;(require 'flycheck-pyflakes)
+(require 'flycheck)
 (add-to-list 'flycheck-disabled-checkers 'python-flake8)
 (add-to-list 'flycheck-disabled-checkers 'python-pylint)
 

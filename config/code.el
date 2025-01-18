@@ -117,5 +117,23 @@
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
+;; Treesitter
+(add-to-list 'treesit-extra-load-path "~/.emacs.d/tree-sitter/linux/")
+(add-to-list 'treesit-extra-load-path "~/.emacs.d/tree-sitter/windows/")
+(setq major-mode-remap-alist
+ '((bash-mode . bash-ts-mode)
+   (c-mode . c-ts-mode)
+   (c++-mode . c++-ts-mode)
+   (cmake-mode . cmake-ts-mode)
+   (css-mode . css-ts-mode)
+   (java-mode . java-ts-mode)
+   (js2-mode . js-ts-mode)
+   (json-mode . json-ts-mode)
+   (python-mode . python-ts-mode)
+   (conf-toml-mode . toml-ts-mode)
+   (typescript-mode . typescript-ts-mode)
+   (yaml-mode . yaml-ts-mode)))
+(setq treesit-font-lock-level 4) ; Highlight everything
+
 (provide 'code)
 ;;; code.el ends here

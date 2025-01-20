@@ -6,6 +6,7 @@
 
 ;;; Code:
 (add-hook 'after-init-hook 'global-company-mode)
+(use-package company-statistics)
 (add-hook 'after-init-hook 'company-statistics-mode) ; list more commonly used completions first
 
 (global-set-key (kbd "C-<tab>") 'company-manual-begin) ; complete on C-tab

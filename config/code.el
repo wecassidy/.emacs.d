@@ -8,6 +8,7 @@
 (setq-default indent-tabs-mode nil)
 (setq c-basic-offset 2)
 (setq lua-indent-level 2)
+(setq lua-indent-close-paren-align nil)
 
 ;; Don't softwrap
 (set-default 'truncate-lines t)

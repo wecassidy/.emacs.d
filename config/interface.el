@@ -5,8 +5,6 @@
 
 ;;; Code:
 ;; Theme
-(use-package doom-themes)
-(load-theme 'doom-monokai-classic t)
 
 ;; Basic fonts
 
@@ -20,11 +18,6 @@
 
 ;; Use Symbola as a backup when characters aren't found
 (set-fontset-font t nil "Symbola")
-
-;; Mode line
-(use-package doom-modeline
-      :ensure t
-      :hook (after-init . doom-modeline-mode))
 
 ;; Scrolling
 ;;(setq mouse-wheel-scroll-amount '(1 ((shift) . 4)))
